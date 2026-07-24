@@ -6,75 +6,17 @@ import { LuxuryButton } from "../components/LuxuryButton";
 import { ProductCard } from "../components/ProductCard";
 import { CategoryCard } from "../components/CategoryCard";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Sparkles, Clock, Award, Heart, Star, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState } from "react";
+import { Sparkles, Clock, Award, Heart, Instagram, Facebook } from "lucide-react";
+import {
+  getCategoryShopHref,
+  type Product,
+} from "../data/products";
 
-const featuredProducts = [
-  {
-    id: "1",
-    name: "Noir Essence",
-    category: "Men",
-    notes: "Bergamot, Sandalwood, Amber",
-    price: 89,
-    image: "https://images.unsplash.com/photo-1769625310883-6c87ed402d6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-  },
-  {
-    id: "2",
-    name: "Velvet Rose",
-    category: "Women",
-    notes: "Rose, Jasmine, Vanilla",
-    price: 95,
-    image: "https://images.unsplash.com/photo-1760113559708-84e7a148ec68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-  },
-  {
-    id: "3",
-    name: "Pure Mystique",
-    category: "Unisex",
-    notes: "Citrus, Cedar, Musk",
-    price: 92,
-    image: "https://images.unsplash.com/photo-1632495112970-30ce8340c2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-  },
-  {
-    id: "4",
-    name: "Silver Oud",
-    category: "Unisex",
-    notes: "Oud, Leather, Spice",
-    price: 99,
-    image: "https://images.unsplash.com/photo-1765572354938-b88b9d7244cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-  },
-];
-
-const testimonials = [
-  {
-    name: "Sarah Mitchell",
-    rating: 5,
-    text: "Euphoric has completely transformed my fragrance collection. The quality is unmatched and the scents last all day.",
-  },
-  {
-    name: "James Rodriguez",
-    rating: 5,
-    text: "I've never experienced such luxurious fragrances at this price point. Absolutely worth every penny.",
-  },
-  {
-    name: "Emma Chen",
-    rating: 5,
-    text: "The attention to detail in every bottle is remarkable. These are truly premium-inspired fragrances.",
-  },
-];
-
-export function HomePage() {
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
-
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
-    );
-  };
-
+export function HomePage({
+  featuredProducts,
+}: {
+  featuredProducts: Product[];
+}) {
   return (
     <div className="bg-[#0A0A0A]">
       {/* Hero Section */}
@@ -92,24 +34,24 @@ export function HomePage() {
               className="space-y-8"
             >
               <span className="text-xs tracking-widest uppercase text-[#C0C0C0]">
-                Luxury Perfume Impressions
+                Premium Perfume Impressions
               </span>
               <h1 className="font-playfair text-5xl sm:text-6xl lg:text-7xl text-[#F5F5F5] leading-tight">
-                Crafted to Leave an{" "}
-                <span className="text-[#C0C0C0] italic">Impression</span>
+                Luxury, Reimagined for{" "}
+                <span className="text-[#C0C0C0] italic">Every Day</span>
               </h1>
               <p className="text-[#D9D9D9] text-lg leading-relaxed max-w-lg">
-                Experience the art of premium-inspired fragrances. Euphoric
-                offers luxurious scents for men, women, and unisex — designed
-                for those who appreciate elegance and sophistication.
+                Discover high-quality perfume impressions inspired by iconic
+                luxury fragrances, thoughtfully presented for men, women, and
+                every identity.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link href="/shop">
-                  <LuxuryButton variant="primary">Shop Collection</LuxuryButton>
+                  <LuxuryButton variant="primary">Shop Fragrances</LuxuryButton>
                 </Link>
                 <Link href="/about">
                   <LuxuryButton variant="secondary">
-                    Explore Categories
+                    Discover Our Story
                   </LuxuryButton>
                 </Link>
               </div>
@@ -124,8 +66,8 @@ export function HomePage() {
             >
               <div className="relative aspect-square glow-silver">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1772191399367-91ed8d95664b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-                  alt="Luxury Perfume"
+                  src="/hero-banner-image.png"
+                  alt="Euphoric Voyage perfume"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
@@ -145,28 +87,29 @@ export function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="font-playfair text-4xl sm:text-5xl text-[#F5F5F5] mb-4">
-              Shop by Identity
+              Find Your Signature
             </h2>
             <p className="text-[#D9D9D9] max-w-2xl mx-auto">
-              Discover fragrances tailored to your unique essence
+              Explore 194 perfume impressions across our men&apos;s,
+              women&apos;s, and unisex collections.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6">
             <CategoryCard
               title="Men"
-              image="https://images.unsplash.com/photo-1769625310883-6c87ed402d6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-              link="/shop"
+              image="/men-perfume-banner.png"
+              link={getCategoryShopHref("Men")}
             />
             <CategoryCard
               title="Women"
-              image="https://images.unsplash.com/photo-1760113559708-84e7a148ec68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-              link="/shop"
+              image="/women-perfumes-image.png"
+              link={getCategoryShopHref("Women")}
             />
             <CategoryCard
               title="Unisex"
-              image="https://images.unsplash.com/photo-1632495112970-30ce8340c2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-              link="/shop"
+              image="/unisex-perfumes-image.png"
+              link={getCategoryShopHref("Unisex")}
             />
           </div>
         </div>
@@ -182,10 +125,11 @@ export function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="font-playfair text-4xl sm:text-5xl text-[#F5F5F5] mb-4">
-              Featured Fragrances
+              The Fragrance Edit
             </h2>
             <p className="text-[#D9D9D9] max-w-2xl mx-auto">
-              Handpicked selections from our premium collection
+              A curated introduction to the moods, notes, and personalities in
+              the Euphoric collection.
             </p>
           </motion.div>
 
@@ -214,8 +158,8 @@ export function HomePage() {
               className="relative aspect-square"
             >
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1763987300634-7b0822cbf390?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-                alt="Brand Story"
+                src="/about-us-image.png"
+                alt="Euphoric's black and gold botanical brand setting"
                 className="w-full h-full object-cover"
               />
             </motion.div>
@@ -227,21 +171,21 @@ export function HomePage() {
               className="space-y-6"
             >
               <span className="text-xs tracking-widest uppercase text-[#C0C0C0]">
-                Our Story
+                Our Philosophy
               </span>
               <h2 className="font-playfair text-4xl sm:text-5xl text-[#F5F5F5]">
-                The Euphoric Experience
+                Everyday Luxury, Thoughtfully Expressed
               </h2>
               <p className="text-[#D9D9D9] leading-relaxed">
-                At Euphoric, we believe that fragrance is more than a scent —
-                it's an expression of identity, elegance, and sophistication.
-                Each bottle is carefully crafted to capture the essence of
-                luxury, offering premium-inspired fragrances that rival the
-                world's most prestigious brands.
+                Fragrance is more than a finishing touch. It is confidence,
+                memory, and identity expressed without a word. Euphoric brings
+                the character of celebrated luxury scents into a collection
+                designed for real life.
               </p>
               <p className="text-[#D9D9D9] leading-relaxed">
-                Our mission is to make luxury accessible without compromising on
-                quality, ensuring that every spray leaves a lasting impression.
+                From the fragrance profile to the presentation, every detail is
+                considered to make premium scent feel personal, polished, and
+                within reach.
               </p>
               <Link href="/about">
                 <LuxuryButton variant="secondary">Learn More</LuxuryButton>
@@ -261,33 +205,35 @@ export function HomePage() {
             className="text-center mb-16"
           >
             <h2 className="font-playfair text-4xl sm:text-5xl text-[#F5F5F5]">
-              Why Choose Euphoric
+              The Euphoric Standard
             </h2>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                icon: Clock,
-                title: "Long-Lasting",
+                icon: Award,
+                title: "Premium Impressions",
                 description:
-                  "Our fragrances are designed to last throughout the day",
+                  "Luxury-inspired fragrance profiles with a refined character of their own.",
               },
               {
-                icon: Award,
-                title: "Premium Quality",
+                icon: Clock,
+                title: "Long-Lasting Wear",
                 description:
-                  "Inspired by luxury brands, crafted with excellence",
+                  "Composed to stay with you from the first spray to the final impression.",
               },
               {
                 icon: Sparkles,
-                title: "Versatile",
-                description: "Perfect for any occasion, from daily to luxury",
+                title: "194 Fragrances",
+                description:
+                  "A growing catalogue for different moods, moments, and identities.",
               },
               {
                 icon: Heart,
-                title: "Elegant",
-                description: "Sophisticated scents for the discerning individual",
+                title: "Everyday Elegance",
+                description:
+                  "Sophisticated scents that make an everyday ritual feel exceptional.",
               },
             ].map((feature, index) => (
               <motion.div
@@ -307,128 +253,75 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="font-playfair text-4xl sm:text-5xl text-[#F5F5F5]">
-              What Our Customers Say
-            </h2>
-          </motion.div>
-
-          <div className="relative">
-            <div className="glass p-8 sm:p-12 text-center">
-              <div className="flex justify-center mb-4">
-                {[...Array(testimonials[currentTestimonial].rating)].map(
-                  (_, i) => (
-                    <Star
-                      key={i}
-                      className="w-5 h-5 text-[#C0C0C0] fill-[#C0C0C0]"
-                    />
-                  )
-                )}
-              </div>
-              <p className="text-[#F5F5F5] text-lg sm:text-xl mb-6 italic">
-                "{testimonials[currentTestimonial].text}"
-              </p>
-              <p className="text-[#C0C0C0] tracking-widest uppercase text-sm">
-                {testimonials[currentTestimonial].name}
-              </p>
-            </div>
-
-            <button
-              onClick={prevTestimonial}
-              className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 sm:-translate-x-12 text-[#C0C0C0] hover:text-[#F5F5F5] transition-colors"
-            >
-              <ChevronLeft className="w-8 h-8" />
-            </button>
-            <button
-              onClick={nextTestimonial}
-              className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 sm:translate-x-12 text-[#C0C0C0] hover:text-[#F5F5F5] transition-colors"
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery */}
+      {/* Social Media */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#1C1C1E]/30">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-12"
           >
             <h2 className="font-playfair text-4xl sm:text-5xl text-[#F5F5F5] mb-4">
-              Gallery
+              Join the Euphoric Community
             </h2>
-            <p className="text-[#D9D9D9]">
-              Follow us @euphoric for more inspiration
+            <p className="text-[#D9D9D9] max-w-2xl mx-auto">
+              Follow Euphoric PK for premium perfume impressions, fragrance
+              inspiration, collection updates, and everyday elegance.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-2 gap-6">
             {[
-              "https://images.unsplash.com/photo-1709662217788-6a8a1b31562a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-              "https://images.unsplash.com/photo-1630512873562-ee0deb00ed4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-              "https://images.unsplash.com/photo-1639396637739-5ff5f7075394?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-              "https://images.unsplash.com/photo-1773527142299-59863d536e1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-              "https://images.unsplash.com/photo-1737424065355-ead2678f3dfb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-              "https://images.unsplash.com/photo-1765572354938-b88b9d7244cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-            ].map((image, index) => (
-              <motion.div
-                key={index}
+              {
+                name: "Instagram",
+                handle: "@euphoricpak",
+                description:
+                  "Discover luxury-inspired scent profiles, fragrance highlights, and the latest from Euphoric.",
+                cta: "Visit Instagram",
+                href: "https://www.instagram.com/euphoricpak/",
+                icon: Instagram,
+              },
+              {
+                name: "Facebook",
+                handle: "Euphoric PK",
+                description:
+                  "Stay connected for collection updates, product moments, and everyday scent inspiration.",
+                cta: "Visit Facebook",
+                href: "https://www.facebook.com/profile.php?id=61560426114088",
+                icon: Facebook,
+              },
+            ].map((social, index) => (
+              <motion.a
+                key={social.name}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                className="aspect-square overflow-hidden group"
+                transition={{ delay: index * 0.1 }}
+                className="glass group p-8 sm:p-10 hover-lift border border-transparent hover:border-[#C0C0C0]/40 transition-colors"
               >
-                <ImageWithFallback
-                  src={image}
-                  alt={`Gallery ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-              </motion.div>
+                <social.icon className="w-10 h-10 text-[#C0C0C0] mb-8" />
+                <p className="text-xs tracking-widest uppercase text-[#C0C0C0] mb-3">
+                  {social.name}
+                </p>
+                <h3 className="font-playfair text-3xl text-[#F5F5F5] mb-4">
+                  {social.handle}
+                </h3>
+                <p className="text-[#D9D9D9] leading-relaxed mb-8">
+                  {social.description}
+                </p>
+                <span className="text-sm tracking-widest uppercase text-[#F5F5F5] group-hover:text-[#C0C0C0] transition-colors">
+                  {social.cta}
+                </span>
+              </motion.a>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Newsletter */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="glass p-8 sm:p-12 text-center"
-          >
-            <h2 className="font-playfair text-3xl sm:text-4xl text-[#F5F5F5] mb-4">
-              Join Our Exclusive Circle
-            </h2>
-            <p className="text-[#D9D9D9] mb-8 max-w-2xl mx-auto">
-              Subscribe to receive exclusive offers, new arrivals, and fragrance
-              tips delivered to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 bg-[#0A0A0A] border border-[#C0C0C0]/30 px-6 py-3 text-[#F5F5F5] placeholder:text-[#D9D9D9]/50 focus:outline-none focus:border-[#C0C0C0]"
-              />
-              <LuxuryButton variant="primary">Subscribe</LuxuryButton>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 }

@@ -1,5 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Instagram, Facebook, Twitter, Mail } from "lucide-react";
+import { Instagram, Facebook, Mail } from "lucide-react";
+import { WhatsAppIcon } from "./WhatsAppIcon";
+import { getCategoryShopHref } from "../data/products";
 
 export function Footer() {
   return (
@@ -8,12 +11,19 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div>
-            <h3 className="font-playfair text-2xl tracking-wider text-[#C0C0C0] mb-4">
-              EUPHORIC
-            </h3>
+            <Link href="/" className="mb-5 inline-block" aria-label="Euphoric home">
+              <Image
+                src="/euphoric-logo.png"
+                alt="Euphoric"
+                width={339}
+                height={201}
+                className="h-auto w-[170px]"
+                sizes="170px"
+              />
+            </Link>
             <p className="text-[#D9D9D9] text-sm leading-relaxed">
-              Luxury perfume impressions crafted to leave a lasting impression.
-              Premium-inspired scents for the discerning individual.
+              Premium perfume impressions inspired by luxury, created for
+              long-lasting everyday elegance.
             </p>
           </div>
 
@@ -33,7 +43,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shop"
+                  href={getCategoryShopHref("Men")}
                   className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
                 >
                   Men
@@ -41,7 +51,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shop"
+                  href={getCategoryShopHref("Women")}
                   className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
                 >
                   Women
@@ -49,7 +59,7 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  href="/shop"
+                  href={getCategoryShopHref("Unisex")}
                   className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
                 >
                   Unisex
@@ -80,22 +90,6 @@ export function Footer() {
                   Contact
                 </Link>
               </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
-                >
-                  Shipping Info
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
-                >
-                  Returns
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -105,57 +99,78 @@ export function Footer() {
               Contact
             </h4>
             <ul className="space-y-2 mb-6">
-              <li className="text-[#D9D9D9] text-sm">info@euphoric.com</li>
-              <li className="text-[#D9D9D9] text-sm">+1 (555) 123-4567</li>
+              <li>
+                <a
+                  href="mailto:info@euphoric.com"
+                  className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
+                >
+                  info@euphoric.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+923702143838"
+                  className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
+                >
+                  +92 370 2143838
+                </a>
+              </li>
             </ul>
-            <div className="flex space-x-4">
+            <div className="flex items-center gap-4">
               <a
-                href="#"
-                className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                href="https://www.instagram.com/euphoricpak/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Euphoric on Instagram"
+                className="inline-flex size-5 items-center justify-center text-[#D9D9D9] leading-none hover:text-[#C0C0C0] transition-colors"
               >
-                <Instagram className="w-5 h-5" />
+                <Instagram className="block size-5" />
               </a>
               <a
-                href="#"
-                className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                href="https://www.facebook.com/profile.php?id=61560426114088"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Euphoric on Facebook"
+                className="inline-flex size-5 items-center justify-center text-[#D9D9D9] leading-none hover:text-[#C0C0C0] transition-colors"
               >
-                <Facebook className="w-5 h-5" />
+                <Facebook className="block size-5" />
               </a>
               <a
-                href="#"
-                className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                href="https://wa.me/923702143838"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Chat with Euphoric on WhatsApp"
+                className="inline-flex size-5 items-center justify-center text-[#D9D9D9] leading-none hover:text-[#C0C0C0] transition-colors"
               >
-                <Twitter className="w-5 h-5" />
+                <WhatsAppIcon className="block size-5" />
               </a>
               <a
-                href="#"
-                className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                href="mailto:info@euphoric.com"
+                aria-label="Email Euphoric"
+                className="inline-flex size-5 items-center justify-center text-[#D9D9D9] leading-none hover:text-[#C0C0C0] transition-colors"
               >
-                <Mail className="w-5 h-5" />
+                <Mail className="block size-5" />
               </a>
             </div>
           </div>
         </div>
 
         <div className="border-t border-[#C0C0C0]/10 mt-12 pt-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left">
             <p className="text-[#D9D9D9] text-sm">
               © 2026 Euphoric. All rights reserved.
             </p>
-            <div className="flex space-x-6">
+            <p className="text-[#D9D9D9] text-sm">
+              Powered by{" "}
               <a
-                href="#"
-                className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
+                href="https://patricians.pk/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#C0C0C0] underline decoration-[#C0C0C0]/40 underline-offset-4 hover:text-white transition-colors"
               >
-                Privacy Policy
+                Patricians
               </a>
-              <a
-                href="#"
-                className="text-[#D9D9D9] text-sm hover:text-[#C0C0C0] transition-colors"
-              >
-                Terms of Service
-              </a>
-            </div>
+            </p>
           </div>
         </div>
       </div>

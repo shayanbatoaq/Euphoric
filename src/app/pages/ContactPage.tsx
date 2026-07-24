@@ -2,53 +2,111 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
-import { LuxuryButton } from "../components/LuxuryButton";
-import { Mail, Phone, MapPin, ChevronDown } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  LoaderCircle,
+  Mail,
+  Phone,
+} from "lucide-react";
+import { WhatsAppIcon } from "../components/WhatsAppIcon";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
 
 export function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     subject: "",
     message: "",
+    website: "",
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState<{
+    kind: "success" | "error";
+    message: string;
+  } | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    setSubmitting(true);
+    setStatus(null);
+    setFieldErrors({});
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const result = (await response.json()) as {
+        message?: string;
+        error?: string;
+        fields?: Record<string, string>;
+      };
+
+      if (!response.ok) {
+        setFieldErrors(result.fields ?? {});
+        setStatus({
+          kind: "error",
+          message: result.error ?? "Please check your details and try again.",
+        });
+        return;
+      }
+
+      setStatus({
+        kind: "success",
+        message: result.message ?? "Your message has been received.",
+      });
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+        website: "",
+      });
+    } catch {
+      setStatus({
+        kind: "error",
+        message: "We could not send your message. Please try again.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const faqs = [
     {
-      question: "How long does shipping take?",
+      question: "What is a perfume impression?",
       answer:
-        "Standard shipping takes 3-5 business days. Express shipping (1-2 business days) is available for an additional fee. All orders over $50 receive free standard shipping.",
+        "A perfume impression is a fragrance inspired by the scent profile and character of a well-known luxury fragrance. It offers a familiar olfactory experience through Euphoric's own presentation.",
     },
     {
-      question: "What is your return policy?",
+      question: "Are Euphoric perfumes original designer fragrances?",
       answer:
-        "We offer a 30-day return policy for unopened items in their original packaging. If you're not completely satisfied with your purchase, please contact our customer service team to initiate a return.",
+        "Euphoric creates perfume impressions; we do not sell original designer perfumes or counterfeit products. References to well-known fragrances are used only to help customers understand the inspiration and scent direction.",
     },
     {
-      question: "Are your fragrances authentic?",
+      question: "How do I choose the right fragrance?",
       answer:
-        "Yes! Our fragrances are premium-inspired perfumes crafted with high-quality ingredients. While they are impressions of luxury scents, they are not counterfeit products. We create our own unique formulations inspired by popular fragrances.",
+        "Start with the notes and fragrance families you already enjoy, then explore our men's, women's, and unisex collections. If you are unsure, message us on WhatsApp and we can help narrow down the options.",
     },
     {
       question: "How long do the fragrances last?",
       answer:
-        "Our fragrances are designed to last 6-8 hours on average, with some lasting even longer depending on your skin type and the specific scent. For best results, apply to pulse points and moisturized skin.",
+        "Our perfume impressions are designed for long-lasting wear. Performance naturally varies by fragrance, skin chemistry, climate, and application, so we recommend applying to moisturized pulse points.",
     },
     {
-      question: "Can I purchase gift sets?",
+      question: "Which collections do you offer?",
       answer:
-        "Yes! We offer curated gift sets and also provide gift wrapping services. You can add a personalized message during checkout. Contact us for custom gift set requests.",
+        "Euphoric offers 194 fragrance impressions across men's, women's, and unisex collections, with scent profiles for everyday wear, special occasions, and everything in between.",
     },
     {
-      question: "Do you offer samples?",
+      question: "How can I confirm availability or place an order?",
       answer:
-        "We currently offer travel-size versions of select fragrances. Sample sets are coming soon! Sign up for our newsletter to be notified when they become available.",
+        "Browse the collection and complete the secure cash-on-delivery checkout online. Contact us directly when you need fragrance guidance or order support.",
     },
   ];
 
@@ -70,7 +128,7 @@ export function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-[#D9D9D9] text-lg"
           >
-            We'd love to hear from you
+            Let us help you discover a fragrance that feels like you.
           </motion.p>
         </div>
       </section>
@@ -90,9 +148,9 @@ export function ContactPage() {
                 Contact Information
               </h2>
               <p className="text-[#D9D9D9] leading-relaxed mb-8">
-                Have a question or need assistance? Our customer service team is
-                here to help. Reach out to us through any of the following
-                channels.
+                Whether you need help choosing an impression, understanding
+                fragrance notes, or confirming availability, the Euphoric team
+                is ready to guide you.
               </p>
             </div>
 
@@ -103,8 +161,12 @@ export function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[#F5F5F5] mb-1">Email</h3>
-                  <p className="text-[#D9D9D9]">info@euphoric.com</p>
-                  <p className="text-[#D9D9D9] text-sm">support@euphoric.com</p>
+                  <a
+                    href="mailto:info@euphoric.com"
+                    className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                  >
+                    info@euphoric.com
+                  </a>
                 </div>
               </div>
 
@@ -114,41 +176,66 @@ export function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-[#F5F5F5] mb-1">Phone</h3>
-                  <p className="text-[#D9D9D9]">+1 (555) 123-4567</p>
-                  <p className="text-[#D9D9D9] text-sm">
-                    Mon-Fri: 9AM - 6PM EST
-                  </p>
+                  <a
+                    href="tel:+923702143838"
+                    className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                  >
+                    +92 370 2143838
+                  </a>
                 </div>
               </div>
 
               <div className="flex items-start space-x-4">
                 <div className="glass p-3">
-                  <MapPin className="w-6 h-6 text-[#C0C0C0]" />
+                  <WhatsAppIcon className="w-6 h-6 text-[#C0C0C0]" />
                 </div>
                 <div>
-                  <h3 className="text-[#F5F5F5] mb-1">Location</h3>
-                  <p className="text-[#D9D9D9]">123 Luxury Lane</p>
-                  <p className="text-[#D9D9D9]">New York, NY 10001</p>
+                  <h3 className="text-[#F5F5F5] mb-1">WhatsApp</h3>
+                  <a
+                    href="https://wa.me/923702143838"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                  >
+                    Chat with us
+                  </a>
                 </div>
               </div>
-            </div>
 
-            <div className="glass p-6">
-              <h3 className="text-[#F5F5F5] mb-3">Business Hours</h3>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-[#D9D9D9]">Monday - Friday</span>
-                  <span className="text-[#C0C0C0]">9:00 AM - 6:00 PM</span>
+              <div className="flex items-start space-x-4">
+                <div className="glass p-3">
+                  <Instagram className="w-6 h-6 text-[#C0C0C0]" />
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-[#D9D9D9]">Saturday</span>
-                  <span className="text-[#C0C0C0]">10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#D9D9D9]">Sunday</span>
-                  <span className="text-[#C0C0C0]">Closed</span>
+                <div>
+                  <h3 className="text-[#F5F5F5] mb-1">Instagram</h3>
+                  <a
+                    href="https://www.instagram.com/euphoricpak/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                  >
+                    @euphoricpak
+                  </a>
                 </div>
               </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="glass p-3">
+                  <Facebook className="w-6 h-6 text-[#C0C0C0]" />
+                </div>
+                <div>
+                  <h3 className="text-[#F5F5F5] mb-1">Facebook</h3>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61560426114088"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
+                  >
+                    Euphoric PK
+                  </a>
+                </div>
+              </div>
+
             </div>
           </motion.div>
 
@@ -172,6 +259,11 @@ export function ContactPage() {
                   className="w-full bg-[#0A0A0A] border border-[#C0C0C0]/30 px-4 py-3 text-[#F5F5F5] focus:outline-none focus:border-[#C0C0C0] transition-colors"
                   required
                 />
+                {fieldErrors.name && (
+                  <p className="mt-2 text-xs text-red-200">
+                    {fieldErrors.name}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -187,6 +279,33 @@ export function ContactPage() {
                   className="w-full bg-[#0A0A0A] border border-[#C0C0C0]/30 px-4 py-3 text-[#F5F5F5] focus:outline-none focus:border-[#C0C0C0] transition-colors"
                   required
                 />
+                {fieldErrors.email && (
+                  <p className="mt-2 text-xs text-red-200">
+                    {fieldErrors.email}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="text-[#C0C0C0] text-xs tracking-widest uppercase block mb-2">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  placeholder="+92 334-1111657"
+                  inputMode="tel"
+                  autoComplete="tel"
+                  className="w-full bg-[#0A0A0A] border border-[#C0C0C0]/30 px-4 py-3 text-[#F5F5F5] focus:outline-none focus:border-[#C0C0C0] transition-colors"
+                />
+                {fieldErrors.phone && (
+                  <p className="mt-2 text-xs text-red-200">
+                    {fieldErrors.phone}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -202,6 +321,11 @@ export function ContactPage() {
                   className="w-full bg-[#0A0A0A] border border-[#C0C0C0]/30 px-4 py-3 text-[#F5F5F5] focus:outline-none focus:border-[#C0C0C0] transition-colors"
                   required
                 />
+                {fieldErrors.subject && (
+                  <p className="mt-2 text-xs text-red-200">
+                    {fieldErrors.subject}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -217,11 +341,54 @@ export function ContactPage() {
                   className="w-full bg-[#0A0A0A] border border-[#C0C0C0]/30 px-4 py-3 text-[#F5F5F5] focus:outline-none focus:border-[#C0C0C0] transition-colors resize-none"
                   required
                 />
+                {fieldErrors.message && (
+                  <p className="mt-2 text-xs text-red-200">
+                    {fieldErrors.message}
+                  </p>
+                )}
               </div>
 
-              <LuxuryButton variant="primary" className="w-full">
-                Send Message
-              </LuxuryButton>
+              <div
+                className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+                aria-hidden="true"
+              >
+                <label>
+                  Website
+                  <input
+                    name="website"
+                    value={formData.website}
+                    onChange={(e) =>
+                      setFormData({ ...formData, website: e.target.value })
+                    }
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </label>
+              </div>
+
+              {status && (
+                <p
+                  role="status"
+                  className={`border p-3 text-sm leading-6 ${
+                    status.kind === "success"
+                      ? "border-emerald-300/20 bg-emerald-300/5 text-emerald-100"
+                      : "border-red-300/20 bg-red-300/5 text-red-100"
+                  }`}
+                >
+                  {status.message}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={submitting}
+                className="flex w-full items-center justify-center gap-2 bg-[#C0C0C0] px-8 py-3 text-sm uppercase tracking-widest text-[#0A0A0A] transition hover:bg-[#D9D9D9] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {submitting && (
+                  <LoaderCircle className="size-4 animate-spin" />
+                )}
+                {submitting ? "Sending…" : "Send Your Message"}
+              </button>
             </form>
           </motion.div>
         </div>
@@ -239,7 +406,7 @@ export function ContactPage() {
             Frequently Asked Questions
           </h2>
           <p className="text-[#D9D9D9]">
-            Find answers to common questions about our fragrances
+            A clearer guide to perfume impressions and the Euphoric collection.
           </p>
         </motion.div>
 

@@ -1,21 +1,36 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, User, ShoppingBag, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useStorefront } from "../context/StorefrontContext";
+import {
+  AccountDialog,
+  CartDrawer,
+  SearchOverlay,
+} from "./StorefrontPanels";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const {
+    openSearch,
+    openAccount,
+    openCart,
+    cartQuantity,
+    user,
+  } = useStorefront();
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -32,83 +47,50 @@ export function Navbar() {
   ];
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? "glass py-4" : "bg-transparent py-6"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <span className="font-playfair text-2xl sm:text-3xl tracking-wider text-[#C0C0C0]">
-              EUPHORIC
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                href={link.path}
-                className={`text-sm tracking-widest uppercase transition-colors ${
-                  pathname === link.path
-                    ? "text-[#C0C0C0]"
-                    : "text-[#D9D9D9] hover:text-[#C0C0C0]"
-                }`}
-              >
-                {link.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Icons */}
-          <div className="flex items-center space-x-4 sm:space-x-6">
-            <button className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors">
-              <Search className="w-5 h-5" />
-            </button>
-            <button className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors">
-              <User className="w-5 h-5" />
-            </button>
-            <button className="text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors relative">
-              <ShoppingBag className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#C0C0C0] text-[#0A0A0A] text-xs rounded-full flex items-center justify-center">
-                0
-              </span>
-            </button>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden text-[#D9D9D9] hover:text-[#C0C0C0] transition-colors"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6" />
-              ) : (
-                <Menu className="w-6 h-6" />
-              )}
-            </button>
-          </div>
+    <>
+      <header className="fixed left-0 right-0 top-0 z-50">
+        <div
+          role="note"
+          className="border-b border-[#C0C0C0]/15 bg-[#0A0A0A] px-3 py-2 text-center text-[10px] uppercase leading-relaxed tracking-[0.16em] text-[#D9D9D9] sm:text-xs sm:tracking-[0.2em]"
+        >
+          All Euphoric perfumes are fragrance impressions and are not original
+          designer scents.
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 overflow-hidden"
-            >
-              <div className="flex flex-col space-y-4 py-4">
+        <motion.nav
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          aria-label="Primary navigation"
+          className={`transition-all duration-300 ${
+            scrolled
+              ? "border-b border-[#C0C0C0]/10 bg-[#0A0A0A]/95 py-1.5 backdrop-blur-xl"
+              : "bg-[#0A0A0A]/75 py-3 backdrop-blur-md"
+          }`}
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between">
+              <Link
+                href="/"
+                className="flex shrink-0 items-center"
+                aria-label="Euphoric home"
+              >
+                <Image
+                  src="/euphoric-logo.png"
+                  alt="Euphoric"
+                  width={339}
+                  height={201}
+                  priority
+                  className="h-auto w-[108px] sm:w-[132px]"
+                  sizes="(min-width: 640px) 132px, 108px"
+                />
+              </Link>
+
+              <div className="hidden items-center space-x-8 md:flex">
                 {navLinks.map((link) => (
                   <Link
                     key={link.path}
                     href={link.path}
-                    className={`text-sm tracking-widest uppercase transition-colors ${
+                    className={`text-sm uppercase tracking-widest transition-colors ${
                       pathname === link.path
                         ? "text-[#C0C0C0]"
                         : "text-[#D9D9D9] hover:text-[#C0C0C0]"
@@ -118,10 +100,95 @@ export function Navbar() {
                   </Link>
                 ))}
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+
+              <div className="flex items-center space-x-4 sm:space-x-6">
+                <button
+                  type="button"
+                  onClick={openSearch}
+                  aria-label="Search products"
+                  className="text-[#D9D9D9] transition-colors hover:text-[#C0C0C0]"
+                >
+                  <Search className="size-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={openAccount}
+                  aria-label={user ? "Open your account" : "Sign in or create an account"}
+                  className="relative text-[#D9D9D9] transition-colors hover:text-[#C0C0C0]"
+                >
+                  <User className="size-5" />
+                  {user && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute -right-1 -top-1 size-2 rounded-full bg-emerald-300 ring-2 ring-[#0A0A0A]"
+                    />
+                  )}
+                </button>
+                <button
+                  type="button"
+                  onClick={openCart}
+                  aria-label={`Open shopping bag with ${cartQuantity} ${
+                    cartQuantity === 1 ? "item" : "items"
+                  }`}
+                  className="relative text-[#D9D9D9] transition-colors hover:text-[#C0C0C0]"
+                >
+                  <ShoppingBag className="size-5" />
+                  <span className="absolute -right-2 -top-2 flex size-4 items-center justify-center rounded-full bg-[#C0C0C0] text-[10px] font-medium text-[#0A0A0A]">
+                    {cartQuantity > 99 ? "99+" : cartQuantity}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  aria-label={
+                    mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"
+                  }
+                  aria-expanded={mobileMenuOpen}
+                  className="text-[#D9D9D9] transition-colors hover:text-[#C0C0C0] md:hidden"
+                >
+                  {mobileMenuOpen ? (
+                    <X className="size-6" />
+                  ) : (
+                    <Menu className="size-6" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <AnimatePresence>
+              {mobileMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="overflow-hidden md:hidden"
+                >
+                  <div className="flex flex-col space-y-4 border-t border-[#C0C0C0]/10 py-5">
+                    {navLinks.map((link) => (
+                      <Link
+                        key={link.path}
+                        href={link.path}
+                        className={`text-sm uppercase tracking-widest transition-colors ${
+                          pathname === link.path
+                            ? "text-[#C0C0C0]"
+                            : "text-[#D9D9D9] hover:text-[#C0C0C0]"
+                        }`}
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.nav>
+      </header>
+
+      <SearchOverlay />
+      <AccountDialog />
+      <CartDrawer />
+    </>
   );
 }

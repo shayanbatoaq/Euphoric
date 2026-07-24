@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- this fallback accepts arbitrary external catalogue URLs. */
+
 import React, { useState } from 'react'
 
 const ERROR_IMG_SRC =

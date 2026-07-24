@@ -2,118 +2,55 @@
 
 import { useState } from "react";
 import { motion } from "motion/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ProductCard } from "../components/ProductCard";
 import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import {
+  getProductCategoriesFromValues,
+  productCategories,
+  type Product,
+  type ProductCategory,
+} from "../data/products";
 
-const allProducts = [
-  {
-    id: "1",
-    name: "Noir Essence",
-    category: "Men",
-    notes: "Bergamot, Sandalwood, Amber",
-    price: 89,
-    image: "https://images.unsplash.com/photo-1769625310883-6c87ed402d6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Woody",
-    occasion: "Luxury",
-  },
-  {
-    id: "2",
-    name: "Velvet Rose",
-    category: "Women",
-    notes: "Rose, Jasmine, Vanilla",
-    price: 95,
-    image: "https://images.unsplash.com/photo-1760113559708-84e7a148ec68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Floral",
-    occasion: "Date Night",
-  },
-  {
-    id: "3",
-    name: "Pure Mystique",
-    category: "Unisex",
-    notes: "Citrus, Cedar, Musk",
-    price: 92,
-    image: "https://images.unsplash.com/photo-1632495112970-30ce8340c2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Fresh",
-    occasion: "Daily",
-  },
-  {
-    id: "4",
-    name: "Silver Oud",
-    category: "Unisex",
-    notes: "Oud, Leather, Spice",
-    price: 99,
-    image: "https://images.unsplash.com/photo-1765572354938-b88b9d7244cb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Oriental",
-    occasion: "Luxury",
-  },
-  {
-    id: "5",
-    name: "Azure Dream",
-    category: "Men",
-    notes: "Marine, Lavender, Vetiver",
-    price: 87,
-    image: "https://images.unsplash.com/photo-1709662217788-6a8a1b31562a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Fresh",
-    occasion: "Daily",
-  },
-  {
-    id: "6",
-    name: "Golden Amber",
-    category: "Women",
-    notes: "Amber, Patchouli, Honey",
-    price: 94,
-    image: "https://images.unsplash.com/photo-1630512873562-ee0deb00ed4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Oriental",
-    occasion: "Date Night",
-  },
-  {
-    id: "7",
-    name: "Midnight Spice",
-    category: "Men",
-    notes: "Cardamom, Black Pepper, Tobacco",
-    price: 91,
-    image: "https://images.unsplash.com/photo-1639396637739-5ff5f7075394?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Spicy",
-    occasion: "Office",
-  },
-  {
-    id: "8",
-    name: "Blossom Silk",
-    category: "Women",
-    notes: "Peony, White Tea, Silk Musk",
-    price: 93,
-    image: "https://images.unsplash.com/photo-1773527142299-59863d536e1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
-    scentFamily: "Floral",
-    occasion: "Daily",
-  },
-];
-
-export function ShopPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string[]>([]);
-  const [selectedScentFamily, setSelectedScentFamily] = useState<string[]>([]);
-  const [selectedOccasion, setSelectedOccasion] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 150]);
+export function ShopPage({ products }: { products: Product[] }) {
   const [sortBy, setSortBy] = useState("featured");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const selectedCategory = getProductCategoriesFromValues(
+    searchParams.getAll("category"),
+  );
 
-  const categories = ["Men", "Women", "Unisex"];
-  const scentFamilies = ["Fresh", "Woody", "Floral", "Oriental", "Citrus", "Sweet", "Spicy"];
-  const occasions = ["Daily", "Date Night", "Office", "Luxury"];
+  const toggleFilter = (value: ProductCategory) => {
+    const nextCategories = new Set(selectedCategory);
 
-  const toggleFilter = (value: string, setter: (prev: string[]) => void, current: string[]) => {
-    if (current.includes(value)) {
-      setter(current.filter((item) => item !== value));
+    if (nextCategories.has(value)) {
+      nextCategories.delete(value);
     } else {
-      setter([...current, value]);
+      nextCategories.add(value);
     }
+
+    const nextSearchParams = new URLSearchParams(searchParams.toString());
+    nextSearchParams.delete("category");
+    productCategories
+      .filter((category) => nextCategories.has(category))
+      .forEach((category) =>
+        nextSearchParams.append("category", category.toLowerCase()),
+      );
+
+    const query = nextSearchParams.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
   };
 
-  const filteredProducts = allProducts.filter((product) => {
-    const categoryMatch = selectedCategory.length === 0 || selectedCategory.includes(product.category);
-    const scentMatch = selectedScentFamily.length === 0 || selectedScentFamily.includes(product.scentFamily);
-    const occasionMatch = selectedOccasion.length === 0 || selectedOccasion.includes(product.occasion);
-    const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-    return categoryMatch && scentMatch && occasionMatch && priceMatch;
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      selectedCategory.length === 0 ||
+      selectedCategory.includes(product.category);
+
+    return matchesCategory;
   });
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -127,17 +64,15 @@ export function ShopPage() {
       {/* Category */}
       <div>
         <h3 className="text-[#C0C0C0] text-xs tracking-widest uppercase mb-4">
-          Category
+          Collection
         </h3>
         <div className="space-y-2">
-          {categories.map((category) => (
+          {productCategories.map((category) => (
             <label key={category} className="flex items-center space-x-3 cursor-pointer group">
               <input
                 type="checkbox"
                 checked={selectedCategory.includes(category)}
-                onChange={() =>
-                  toggleFilter(category, setSelectedCategory, selectedCategory)
-                }
+                onChange={() => toggleFilter(category)}
                 className="w-4 h-4 bg-[#1C1C1E] border border-[#C0C0C0]/30 checked:bg-[#C0C0C0] checked:border-[#C0C0C0]"
               />
               <span className="text-[#D9D9D9] text-sm group-hover:text-[#C0C0C0] transition-colors">
@@ -148,74 +83,6 @@ export function ShopPage() {
         </div>
       </div>
 
-      {/* Scent Family */}
-      <div>
-        <h3 className="text-[#C0C0C0] text-xs tracking-widest uppercase mb-4">
-          Scent Family
-        </h3>
-        <div className="space-y-2">
-          {scentFamilies.map((scent) => (
-            <label key={scent} className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={selectedScentFamily.includes(scent)}
-                onChange={() =>
-                  toggleFilter(scent, setSelectedScentFamily, selectedScentFamily)
-                }
-                className="w-4 h-4 bg-[#1C1C1E] border border-[#C0C0C0]/30 checked:bg-[#C0C0C0] checked:border-[#C0C0C0]"
-              />
-              <span className="text-[#D9D9D9] text-sm group-hover:text-[#C0C0C0] transition-colors">
-                {scent}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Price Range */}
-      <div>
-        <h3 className="text-[#C0C0C0] text-xs tracking-widest uppercase mb-4">
-          Price Range
-        </h3>
-        <div className="space-y-4">
-          <input
-            type="range"
-            min="0"
-            max="150"
-            value={priceRange[1]}
-            onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
-            className="w-full"
-          />
-          <div className="flex items-center justify-between text-[#D9D9D9] text-sm">
-            <span>${priceRange[0]}</span>
-            <span>${priceRange[1]}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Occasion */}
-      <div>
-        <h3 className="text-[#C0C0C0] text-xs tracking-widest uppercase mb-4">
-          Occasion
-        </h3>
-        <div className="space-y-2">
-          {occasions.map((occasion) => (
-            <label key={occasion} className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={selectedOccasion.includes(occasion)}
-                onChange={() =>
-                  toggleFilter(occasion, setSelectedOccasion, selectedOccasion)
-                }
-                className="w-4 h-4 bg-[#1C1C1E] border border-[#C0C0C0]/30 checked:bg-[#C0C0C0] checked:border-[#C0C0C0]"
-              />
-              <span className="text-[#D9D9D9] text-sm group-hover:text-[#C0C0C0] transition-colors">
-                {occasion}
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
     </div>
   );
 
@@ -237,7 +104,8 @@ export function ShopPage() {
             transition={{ delay: 0.1 }}
             className="text-[#D9D9D9] text-lg"
           >
-            Discover your signature scent
+            Explore premium perfume impressions for men, women, and every
+            identity.
           </motion.p>
         </div>
       </div>
@@ -259,12 +127,13 @@ export function ShopPage() {
           {/* Products */}
           <div className="flex-1">
             {/* Top Bar */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-[#D9D9D9]">
-                {sortedProducts.length} {sortedProducts.length === 1 ? "product" : "products"}
+                Showing {sortedProducts.length}{" "}
+                {sortedProducts.length === 1 ? "fragrance" : "fragrances"}
               </p>
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between gap-4 sm:justify-start">
                 {/* Mobile Filter Button */}
                 <button
                   onClick={() => setMobileFiltersOpen(true)}

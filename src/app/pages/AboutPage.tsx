@@ -1,8 +1,13 @@
 "use client";
 
 import { motion } from "motion/react";
+import Link from "next/link";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import { Sparkles, Heart, Award, Users } from "lucide-react";
+import { ArrowUpRight, Sparkles, Heart, Award, Users } from "lucide-react";
+import {
+  getCategoryShopHref,
+  type ProductCategory,
+} from "../data/products";
 
 export function AboutPage() {
   const values = [
@@ -10,25 +15,25 @@ export function AboutPage() {
       icon: Sparkles,
       title: "Premium Quality",
       description:
-        "Every fragrance is crafted with the finest ingredients, ensuring exceptional quality and longevity.",
+        "High-quality perfume impressions designed with depth, balance, and lasting presence in mind.",
     },
     {
       icon: Heart,
-      title: "Passion for Perfume",
+      title: "Considered Presentation",
       description:
-        "Our love for fragrance drives us to create scents that inspire and captivate.",
+        "From bottle to digital experience, every detail is shaped to feel polished and intentional.",
     },
     {
       icon: Award,
-      title: "Excellence",
+      title: "Accessible Luxury",
       description:
-        "We strive for perfection in every bottle, delivering luxury at accessible prices.",
+        "A refined fragrance experience that brings the feeling of luxury closer to everyday life.",
     },
     {
       icon: Users,
-      title: "Customer First",
+      title: "Confidence Through Scent",
       description:
-        "Your satisfaction is our priority. We're committed to providing an exceptional experience.",
+        "A diverse collection created to help every customer find a scent that feels distinctly their own.",
     },
   ];
 
@@ -50,7 +55,8 @@ export function AboutPage() {
             transition={{ delay: 0.1 }}
             className="text-[#D9D9D9] text-lg leading-relaxed"
           >
-            Where luxury meets accessibility in the world of fine fragrances
+            Premium perfume impressions for a life lived with confidence and
+            style.
           </motion.p>
         </div>
       </section>
@@ -68,21 +74,19 @@ export function AboutPage() {
               Our Story
             </h2>
             <p className="text-[#D9D9D9] leading-relaxed">
-              Euphoric was born from a simple belief: everyone deserves to
-              experience luxury. We recognized that high-quality fragrances
-              shouldn't be exclusive to those who can afford designer prices.
+              Euphoric begins with a simple idea: the character and emotion of a
+              luxury fragrance should be easier to experience every day.
             </p>
             <p className="text-[#D9D9D9] leading-relaxed">
-              Our journey began with a passion for perfumery and a commitment to
-              democratizing luxury. We've spent years studying the finest
-              fragrances, understanding their compositions, and recreating that
-              same level of sophistication in our own collections.
+              We specialize in high-quality perfume impressions inspired by
+              iconic scent profiles. Each collection balances sophistication,
+              wearability, and considered presentation without making price the
+              whole story.
             </p>
             <p className="text-[#D9D9D9] leading-relaxed">
-              Today, Euphoric stands as a testament to quality, craftsmanship,
-              and accessibility. Each fragrance in our collection is a
-              masterpiece, designed to evoke emotion, create memories, and leave
-              a lasting impression.
+              With 194 fragrances across men&apos;s, women&apos;s, and
+              unisex collections, Euphoric offers room to explore every mood,
+              moment, and expression of self.
             </p>
           </motion.div>
 
@@ -93,8 +97,8 @@ export function AboutPage() {
             className="relative aspect-[4/5] glow-silver"
           >
             <ImageWithFallback
-              src="https://images.unsplash.com/photo-1763987300634-7b0822cbf390?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080"
-              alt="Euphoric Story"
+              src="/about-us-image.png"
+              alt="Euphoric's black and gold botanical brand setting"
               className="w-full h-full object-cover"
             />
           </motion.div>
@@ -107,50 +111,65 @@ export function AboutPage() {
           {[
             {
               title: "Men's Collection",
+              category: "Men" as ProductCategory,
               description:
-                "Bold, sophisticated scents designed for the modern man. From fresh aquatics to deep woody notes, our men's collection embodies strength and confidence.",
-              image:
-                "https://images.unsplash.com/photo-1769625310883-6c87ed402d6f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+                "Confident fragrance profiles ranging from crisp and fresh to warm, woody, and intense—created for modern personal style.",
+              image: "/men-perfume-banner.png",
             },
             {
               title: "Women's Collection",
+              category: "Women" as ProductCategory,
               description:
-                "Elegant, feminine fragrances that celebrate beauty and grace. Our women's collection features delicate florals, warm vanillas, and captivating orientals.",
-              image:
-                "https://images.unsplash.com/photo-1760113559708-84e7a148ec68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+                "Expressive compositions spanning luminous florals, soft musks, warm vanillas, and richer evening signatures.",
+              image: "/women-perfumes-image.png",
             },
             {
               title: "Unisex Collection",
+              category: "Unisex" as ProductCategory,
               description:
-                "Versatile scents that transcend traditional boundaries. These fragrances are designed for anyone who appreciates quality and sophistication.",
-              image:
-                "https://images.unsplash.com/photo-1632495112970-30ce8340c2be?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080",
+                "Versatile scent profiles chosen for character rather than convention, ready to be worn by anyone who connects with them.",
+              image: "/unisex-perfumes-image.png",
             },
           ].map((collection, index) => (
-            <motion.div
-              key={index}
+            <motion.article
+              key={collection.category}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="glass overflow-hidden hover-lift"
+              className="glass h-full overflow-hidden hover-lift"
             >
-              <div className="aspect-[4/5] overflow-hidden">
-                <ImageWithFallback
-                  src={collection.image}
-                  alt={collection.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-6 space-y-3">
-                <h3 className="font-playfair text-2xl text-[#F5F5F5]">
-                  {collection.title}
-                </h3>
-                <p className="text-[#D9D9D9] text-sm leading-relaxed">
-                  {collection.description}
-                </p>
-              </div>
-            </motion.div>
+              <Link
+                href={getCategoryShopHref(collection.category)}
+                aria-label={`Shop the ${collection.title}`}
+                className="group flex h-full flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F5F5F5] focus-visible:ring-inset"
+              >
+                <div className="aspect-[4/5] overflow-hidden">
+                  <ImageWithFallback
+                    src={collection.image}
+                    alt={`Euphoric ${collection.category.toLowerCase()} fragrance collection`}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105 group-focus-visible:scale-105"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="mb-3 flex items-start justify-between gap-4">
+                    <h3 className="font-playfair text-2xl text-[#F5F5F5] transition-colors group-hover:text-white">
+                      {collection.title}
+                    </h3>
+                    <ArrowUpRight
+                      aria-hidden="true"
+                      className="mt-1 h-5 w-5 shrink-0 text-[#C0C0C0] transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1 group-focus-visible:-translate-y-1 group-focus-visible:translate-x-1"
+                    />
+                  </div>
+                  <p className="text-[#D9D9D9] text-sm leading-relaxed">
+                    {collection.description}
+                  </p>
+                  <span className="mt-auto pt-6 text-xs uppercase tracking-[0.18em] text-[#C0C0C0]">
+                    Explore collection
+                  </span>
+                </div>
+              </Link>
+            </motion.article>
           ))}
         </div>
       </section>
@@ -167,7 +186,8 @@ export function AboutPage() {
             Our Values
           </h2>
           <p className="text-[#D9D9D9] max-w-2xl mx-auto">
-            The principles that guide everything we do
+            Quality, presentation, accessibility, and confidence in every
+            detail.
           </p>
         </motion.div>
 
@@ -202,8 +222,8 @@ export function AboutPage() {
           >
             <div className="text-[#C0C0C0] text-6xl font-playfair mb-4">"</div>
             <p className="font-playfair text-3xl sm:text-4xl text-[#F5F5F5] italic leading-relaxed">
-              Fragrance is the invisible accessory that leaves a lasting
-              impression
+              Luxury is not only what you wear. It is how a fragrance makes you
+              feel.
             </p>
             <div className="h-px w-24 bg-[#C0C0C0] mx-auto" />
           </motion.div>
@@ -222,11 +242,10 @@ export function AboutPage() {
             Our Mission
           </h2>
           <p className="text-[#D9D9D9] text-lg leading-relaxed">
-            To create exceptional fragrances that empower individuals to express
-            their unique identity through scent. We're committed to delivering
-            luxury-quality perfumes at accessible prices, ensuring that everyone
-            can experience the joy and confidence that comes with wearing a
-            beautiful fragrance.
+            To make the experience of luxury fragrance more accessible through
+            high-quality perfume impressions, elegant presentation, and a
+            collection broad enough for every customer to discover a signature
+            of their own.
           </p>
         </motion.div>
       </section>
