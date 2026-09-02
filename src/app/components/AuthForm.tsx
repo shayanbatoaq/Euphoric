@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { LoaderCircle, LockKeyhole, Mail, UserRound } from "lucide-react";
 import { getSupabaseBrowserClient } from "../lib/supabase";
 import { safeReturnPath } from "../lib/redirects";
+import { getAuthRedirectOrigin } from "../lib/auth-redirect";
 
 type AuthMode = "signin" | "signup";
 
@@ -53,7 +54,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             password,
             options: {
               data: { full_name: name.trim() },
-              emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+              emailRedirectTo: `${getAuthRedirectOrigin()}/auth/callback?next=${encodeURIComponent(next)}`,
             },
           })
         : await supabase.auth.signInWithPassword({
@@ -89,7 +90,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+        redirectTo: `${getAuthRedirectOrigin()}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
 

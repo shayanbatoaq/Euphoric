@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { LoaderCircle } from "lucide-react";
 import { getSupabaseBrowserClient } from "../lib/supabase";
+import { getAuthRedirectOrigin } from "../lib/auth-redirect";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ export function ForgotPasswordForm() {
     const { error } = await supabase.auth.resetPasswordForEmail(
       email.trim(),
       {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback?next=/auth/update-password`,
+        redirectTo: `${getAuthRedirectOrigin()}/auth/callback?next=/auth/update-password`,
       },
     );
     setSubmitting(false);

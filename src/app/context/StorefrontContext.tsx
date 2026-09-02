@@ -14,6 +14,7 @@ import {
   getSupabaseBrowserClient,
   isSupabaseConfigured,
 } from "../lib/supabase";
+import { getAuthRedirectOrigin } from "../lib/auth-redirect";
 
 const CART_STORAGE_KEY = "euphoric-cart-v1";
 
@@ -247,7 +248,7 @@ export function StorefrontProvider({
         password,
         options: {
           data: { full_name: name },
-          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback?next=/account`,
+          emailRedirectTo: `${getAuthRedirectOrigin()}/auth/callback?next=/account`,
         },
       });
 
@@ -305,7 +306,7 @@ export function StorefrontProvider({
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? window.location.origin}/auth/callback?next=/account`,
+          redirectTo: `${getAuthRedirectOrigin()}/auth/callback?next=/account`,
         },
       });
 
