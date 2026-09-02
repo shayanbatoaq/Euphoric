@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed:products": "tsx --env-file-if-exists=.env.local scripts/seed-products.ts"
+    "seed:products": "tsx --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/seed-products.ts"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
@@ -54,6 +54,7 @@
     "date-fns": "3.6.0",
     "embla-carousel-react": "8.6.0",
     "input-otp": "1.4.2",
+    "libphonenumber-js": "^1.13.9",
     "lucide-react": "0.487.0",
     "motion": "12.23.24",
     "next": "16.2.9",
@@ -69,7 +70,6 @@
     "react-responsive-masonry": "2.7.1",
     "react-slick": "0.31.0",
     "recharts": "2.15.2",
-    "resend": "^6.18.0",
     "server-only": "^0.0.1",
     "sonner": "2.0.3",
     "tailwind-merge": "3.2.0",

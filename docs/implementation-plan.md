@@ -20,7 +20,7 @@
 3. Add a token-protected guest confirmation route and authenticated customer order access.
 4. Move authentication to Supabase SSR cookies and add callback, reset-password, account, order, profile, and address routes.
 5. Add a server-authorized admin area for overview, orders, products, customers, enquiries, settings, CSV exports, and status workflow.
-6. Store contact enquiries through a protected endpoint and send non-blocking Resend notifications.
+6. Store contact enquiries through a protected endpoint for admin follow-up.
 7. Read products from Supabase for server-rendered shop/product pages and debounced search, retaining static data only as a development fallback and seed source.
 8. Add metadata, sitemap/robots, structured data, unit tests for critical rules, and complete setup/operations documentation.
 

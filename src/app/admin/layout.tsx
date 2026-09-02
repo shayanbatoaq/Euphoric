@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { requireAdmin } from "../lib/auth";
+import { getAdminSession } from "../lib/admin-auth";
 import { AdminNav } from "../components/admin/AdminNav";
+import { adminLogoutAction } from "../actions/admin-auth";
 
 export const metadata = {
   title: "Administration | Euphoric",
@@ -14,7 +15,9 @@ export default async function AdminLayout({
 }: {
   children: ReactNode;
 }) {
-  const { profile, user } = await requireAdmin("/admin");
+  const session = await getAdminSession();
+  if (!session) return children;
+  const { username } = session;
 
   return (
     <main className="min-h-screen bg-[#080809] px-4 pb-24 pt-40 text-[#F5F5F5] sm:px-6">
@@ -29,7 +32,7 @@ export default async function AdminLayout({
                 Administration
               </h1>
               <p className="mt-2 text-sm text-[#D9D9D9]/55">
-                {profile?.full_name ?? user.email}
+                {username}
               </p>
             </div>
             <Link
@@ -39,6 +42,11 @@ export default async function AdminLayout({
               <ArrowLeft className="size-4" />
               Customer account
             </Link>
+            <form action={adminLogoutAction}>
+              <button type="submit" className="mt-3 text-xs uppercase tracking-widest text-[#D9D9D9]/70 underline underline-offset-4 hover:text-white">
+                Sign out admin
+              </button>
+            </form>
           </div>
         </header>
 

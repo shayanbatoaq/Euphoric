@@ -5,6 +5,7 @@ import type { User } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "./supabase/server";
 import type { ProfileRow } from "../types/database";
 import { safeReturnPath } from "./redirects";
+import { getAdminSession } from "./admin-auth";
 
 export interface AuthContext {
   user: User;
@@ -51,11 +52,9 @@ export async function requireUser(returnTo = "/account") {
 }
 
 export async function requireAdmin(returnTo = "/admin") {
-  const auth = await requireUser(returnTo);
-
-  if (auth.profile?.role !== "admin") {
-    redirect("/access-denied");
+  const session = await getAdminSession();
+  if (!session) {
+    redirect(`/admin/login?next=${encodeURIComponent(safeReturnPath(returnTo, "/admin"))}`);
   }
-
-  return auth;
+  return session;
 }

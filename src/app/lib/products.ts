@@ -204,7 +204,19 @@ export async function searchStorefrontProducts(
 
   if (error) {
     console.error("Storefront search failed.", { code: error.code });
-    return [];
+    // Keep search usable when the remote catalog is unavailable or has not
+    // been provisioned yet. The bundled catalog is the same source used by
+    // the storefront fallback and contains the product records users can
+    // search for locally.
+    const lower = normalized.toLowerCase();
+    return fallbackProducts
+      .filter(
+        (product) =>
+          product.name.toLowerCase().includes(lower) ||
+          product.brand.toLowerCase().includes(lower) ||
+          product.displayName.toLowerCase().includes(lower),
+      )
+      .slice(0, limit);
   }
   return (data ?? []).map(toStorefrontSummary);
 }

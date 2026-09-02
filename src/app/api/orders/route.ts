@@ -1,10 +1,8 @@
 import { createHash } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { checkoutSchema } from "../../lib/commerce";
-import { sendNewOrderEmails } from "../../lib/email";
 import {
   createConfirmationToken,
-  getOrderWithItemsById,
   hashConfirmationToken,
 } from "../../lib/orders";
 import { enforceRateLimit } from "../../lib/rate-limit";
@@ -94,6 +92,19 @@ export async function POST(request: NextRequest) {
 
     const created = data[0];
 
+    if (parsed.data.saveAddress && user) {
+      await admin.from("customer_addresses").insert({
+        user_id: user.id,
+        label: "Home",
+        full_name: parsed.data.name,
+        phone: parsed.data.phone,
+        city: parsed.data.city,
+        address_line: parsed.data.address,
+        notes: parsed.data.notes ?? null,
+        is_default: false,
+      });
+    }
+
     await admin
       .from("orders")
       .update({
@@ -103,12 +114,6 @@ export async function POST(request: NextRequest) {
         ).toISOString(),
       })
       .eq("id", created.order_id);
-
-    const order = await getOrderWithItemsById(created.order_id);
-
-    if (order) {
-      await sendNewOrderEmails(order);
-    }
 
     return NextResponse.json(
       {

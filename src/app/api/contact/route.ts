@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { contactEnquirySchema } from "../../lib/commerce";
-import { sendContactEnquiryEmail } from "../../lib/email";
 import { enforceRateLimit } from "../../lib/rate-limit";
 import { createSupabaseAdminClient } from "../../lib/supabase/admin";
 
@@ -17,6 +16,8 @@ function validationErrors(
 }
 
 export async function POST(request: NextRequest) {
+  let stage = "rate-limit";
+
   try {
     const allowed = await enforceRateLimit(request, "contact", 6, 900);
     if (!allowed) {
@@ -26,6 +27,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    stage = "validation";
     const body: unknown = await request.json();
     const parsed = contactEnquirySchema.safeParse(body);
     if (!parsed.success) {
@@ -38,6 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    stage = "database";
     const admin = createSupabaseAdminClient();
     const { data: enquiry, error } = await admin
       .from("contact_enquiries")
@@ -59,8 +62,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await sendContactEnquiryEmail(enquiry).catch(() => undefined);
-
     return NextResponse.json(
       {
         message:
@@ -70,6 +71,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     console.error("Contact enquiry failed.", {
+      stage,
       type: error instanceof Error ? error.name : "UnknownError",
     });
     return NextResponse.json(

@@ -1,4 +1,10 @@
 import { z } from "zod";
+import {
+  getCountryCallingCode,
+  isSupportedCountry,
+  parsePhoneNumberFromString,
+  type CountryCode,
+} from "libphonenumber-js";
 import type { OrderStatus } from "../types/database";
 
 export const DEFAULT_SHIPPING_FEE = 300;
@@ -46,40 +52,83 @@ export const checkoutSchema = z.object({
   items: z.array(cartItemSchema).min(1).max(50),
   idempotencyKey: z.string().uuid(),
   website: z.string().max(0).optional(),
+  saveAddress: z.boolean().optional().default(false),
 });
 
-export const contactEnquirySchema = z.object({
-  name: z.string().trim().min(2).max(100),
-  email: z
-    .string()
-    .trim()
-    .max(254)
-    .email()
-    .or(z.literal(""))
-    .optional()
-    .transform((value) => value || undefined),
-  phone: z
-    .string()
-    .trim()
-    .max(32)
-    .optional()
-    .transform((value) => {
-      if (!value) return undefined;
-      return normalizePakistanPhone(value);
-    })
-    .refine(
-      (value) => !value || /^\+92 3\d{2}-\d{7}$/.test(value),
-      "Enter a valid Pakistani mobile number.",
-    ),
-  subject: z
-    .string()
-    .trim()
-    .max(160)
-    .optional()
-    .transform((value) => value || undefined),
-  message: z.string().trim().min(10).max(4000),
-  website: z.string().max(0).optional(),
-});
+export const contactEnquirySchema = z
+  .object({
+    name: z.string().trim().min(2).max(100),
+    email: z
+      .string()
+      .trim()
+      .max(254)
+      .email()
+      .or(z.literal(""))
+      .optional()
+      .transform((value) => value || undefined),
+    phone: z
+      .string()
+      .trim()
+      .max(64)
+      .optional()
+      .transform((value) => value || undefined),
+    phoneCountry: z
+      .string()
+      .trim()
+      .toUpperCase()
+      .length(2)
+      .optional()
+      .default("PK"),
+    subject: z
+      .string()
+      .trim()
+      .max(160)
+      .optional()
+      .transform((value) => value || undefined),
+    message: z.string().trim().min(10).max(4000),
+    website: z.string().max(0).optional(),
+  })
+  .superRefine((value, context) => {
+    if (!value.phone) return;
+    if (!isSupportedCountry(value.phoneCountry)) {
+      context.addIssue({
+        code: "custom",
+        path: ["phone"],
+        message: "Choose a valid phone country.",
+      });
+      return;
+    }
+
+    const country = value.phoneCountry as CountryCode;
+    const digits = value.phone.replace(/\D/g, "");
+    const callingCode = getCountryCallingCode(country);
+    if (digits === callingCode) return;
+
+    const phone = parsePhoneNumberFromString(value.phone, country);
+    if (!phone?.isValid()) {
+      context.addIssue({
+        code: "custom",
+        path: ["phone"],
+        message: "Enter a valid mobile number for the selected country.",
+      });
+    }
+  })
+  .transform((value) => {
+    if (!value.phone || !isSupportedCountry(value.phoneCountry)) {
+      return { ...value, phone: undefined };
+    }
+
+    const country = value.phoneCountry as CountryCode;
+    const digits = value.phone.replace(/\D/g, "");
+    if (digits === getCountryCallingCode(country)) {
+      return { ...value, phone: undefined };
+    }
+
+    return {
+      ...value,
+      phone: parsePhoneNumberFromString(value.phone, country)?.number,
+    };
+  });
 
 export const productMutationSchema = z.object({
   slug: z

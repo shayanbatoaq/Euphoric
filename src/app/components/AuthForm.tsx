@@ -15,6 +15,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState(
     searchParams.get("error") ?? "",
@@ -32,6 +33,18 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
     setSubmitting(true);
     setMessage("");
+
+    if (mode === "signup" && (password.length < 8 || !/\d/.test(password))) {
+      setSubmitting(false);
+      setMessage("Password must be at least 8 characters and include a number.");
+      return;
+    }
+
+    if (mode === "signup" && password !== confirmPassword) {
+      setSubmitting(false);
+      setMessage("Passwords do not match.");
+      return;
+    }
 
     const result =
       mode === "signup"
@@ -64,7 +77,7 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
     router.refresh();
   }
 
-  async function oauth(provider: "google" | "facebook") {
+  async function oauth(provider: "google") {
     const supabase = getSupabaseBrowserClient();
 
     if (!supabase) {
@@ -113,8 +126,23 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         value={password}
         onChange={setPassword}
         autoComplete={mode === "signin" ? "current-password" : "new-password"}
-        minLength={6}
+        minLength={8}
+        pattern={mode === "signup" ? ".*[0-9].*" : undefined}
+        title={mode === "signup" ? "Use at least 8 characters and include a number." : undefined}
+        placeholder={mode === "signin" ? "Password" : "At least 8 characters + a number"}
       />
+
+      {mode === "signup" && (
+        <AuthField
+          icon={<LockKeyhole className="size-4" />}
+          label="Confirm password"
+          type="password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          autoComplete="new-password"
+          minLength={6}
+        />
+      )}
 
       {message && (
         <p
@@ -134,22 +162,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
         {mode === "signin" ? "Sign in" : "Create account"}
       </button>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3">
         <button
           type="button"
           onClick={() => oauth("google")}
           disabled={submitting}
           className="border border-[#C0C0C0]/25 bg-[#1C1C1E] px-4 py-3 text-sm transition hover:border-[#C0C0C0]"
         >
-          Google
-        </button>
-        <button
-          type="button"
-          onClick={() => oauth("facebook")}
-          disabled={submitting}
-          className="border border-[#C0C0C0]/25 bg-[#1C1C1E] px-4 py-3 text-sm transition hover:border-[#C0C0C0]"
-        >
-          Facebook
+          <span className="inline-flex items-center justify-center gap-2"><GoogleIcon />Google</span>
         </button>
       </div>
 
@@ -177,6 +197,10 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
   );
 }
 
+function GoogleIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4"><path fill="#4285F4" d="M21.35 12.23c0-.72-.06-1.42-.18-2.09H12v3.96h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.69 2.91-4.18 2.91-7.26Z"/><path fill="#34A853" d="M12 21.5c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.54 0-4.69-1.72-5.46-4.03H3.3v2.53A9.74 9.74 0 0 0 12 21.5Z"/><path fill="#FBBC05" d="M6.54 13.58A5.85 5.85 0 0 1 6.24 12c0-.55.1-1.09.3-1.58V7.89H3.3A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.05 1.05 4.11l3.24-2.53Z"/><path fill="#EA4335" d="M12 6.39c1.43 0 2.71.49 3.72 1.46l2.79-2.79C16.83 3.48 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.7 5.39l3.24 2.53C7.31 8.11 9.46 6.39 12 6.39Z"/></svg>;
+}
+
 function AuthField({
   icon,
   label,
@@ -185,6 +209,9 @@ function AuthField({
   onChange,
   autoComplete,
   minLength,
+  pattern,
+  title,
+  placeholder,
 }: {
   icon: React.ReactNode;
   label: string;
@@ -193,6 +220,9 @@ function AuthField({
   onChange: (value: string) => void;
   autoComplete: string;
   minLength?: number;
+  pattern?: string;
+  title?: string;
+  placeholder?: string;
 }) {
   return (
     <label className="block">
@@ -210,6 +240,9 @@ function AuthField({
           autoComplete={autoComplete}
           required
           minLength={minLength}
+          pattern={pattern}
+          title={title}
+          placeholder={placeholder}
           className="w-full border border-[#C0C0C0]/25 bg-[#0A0A0A] py-3 pl-10 pr-3 text-[#F5F5F5] outline-none focus:border-[#C0C0C0]"
         />
       </span>

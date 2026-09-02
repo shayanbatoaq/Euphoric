@@ -3,7 +3,7 @@
 Euphoric is a Next.js 16 perfume-impressions storefront backed by Supabase. It
 supports a server-authoritative cash-on-delivery checkout, guest and registered
 customer orders, account order history, product/inventory management, contact
-enquiries, transactional email, and a role-protected admin dashboard.
+enquiries, and a role-protected admin dashboard.
 
 The existing black, charcoal, silver, and off-white storefront remains the
 visual foundation. The static 194-product TypeScript catalogue is retained as
@@ -14,7 +14,6 @@ the seed source and as a local fallback only when Supabase is not configured.
 - Node.js 20 or newer
 - npm
 - A Supabase project
-- A Resend account and verified sending domain for email
 - Optional: Supabase CLI for migration commands
 
 ## Local setup
@@ -46,10 +45,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 
-RESEND_API_KEY=
-ORDER_FROM_EMAIL=
-ORDER_ADMIN_EMAIL=
-CONTACT_RECEIVER_EMAIL=
 ```
 
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` is supported for existing Supabase projects.
@@ -57,9 +52,6 @@ CONTACT_RECEIVER_EMAIL=
   format.
 - `SUPABASE_SERVICE_ROLE_KEY` is server-only. Never prefix it with
   `NEXT_PUBLIC_` or expose it in browser code.
-- `ORDER_FROM_EMAIL` must be a sender authorized in Resend, for example
-  `Euphoric <orders@yourdomain.com>`.
-- Email is non-blocking. An order or enquiry remains saved if delivery fails.
 
 ## Supabase database setup
 
@@ -140,19 +132,6 @@ The app uses cookie-backed `@supabase/ssr` clients and the Next.js 16
 `src/proxy.ts` session refresh pattern. Redirect targets are restricted to local
 application paths.
 
-## Resend configuration
-
-1. Verify a sending domain in Resend.
-2. Create a Resend API key.
-3. Set `RESEND_API_KEY`, `ORDER_FROM_EMAIL`, `ORDER_ADMIN_EMAIL`, and
-   `CONTACT_RECEIVER_EMAIL`.
-
-Emails are sent for:
-
-- Customer order confirmation when the customer supplied an email
-- Every new order to the admin address
-- Customer-visible order-status changes
-- New contact enquiries
 
 Email templates escape user-submitted values before rendering HTML.
 

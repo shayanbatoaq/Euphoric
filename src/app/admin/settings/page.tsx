@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { createSupabaseAdminClient } from "../../lib/supabase/admin";
 import { requireAdmin } from "../../lib/auth";
 import { updateSettingsAction } from "../../actions/admin";
@@ -21,7 +20,20 @@ export default async function AdminSettingsPage({
     .select("*")
     .eq("id", true)
     .single();
-  if (!settings) notFound();
+  if (!settings) {
+    return (
+      <div>
+        <AdminHeader
+          eyebrow="Configuration"
+          title="Store settings"
+          description="Operational values used by server-side checkout and customer support."
+        />
+        <AdminNotice
+          error="Store settings could not be loaded. Check the Supabase connection and migration, then try again."
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

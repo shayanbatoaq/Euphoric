@@ -94,16 +94,31 @@ describe("order workflow", () => {
 
 describe("contact validation", () => {
   it("accepts a legitimate enquiry", () => {
-    expect(
-      contactEnquirySchema.safeParse({
+    const parsed = contactEnquirySchema.safeParse({
         name: "Ali Raza",
         email: "ali@example.com",
         phone: "+92 300-1234567",
+        phoneCountry: "PK",
         subject: "Fragrance advice",
         message: "Please help me choose an everyday fragrance.",
         website: "",
-      }).success,
-    ).toBe(true);
+      });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.phone).toBe("+923001234567");
+  });
+
+  it("accepts and normalizes an international number", () => {
+    const parsed = contactEnquirySchema.safeParse({
+      name: "Sarah Lee",
+      email: "sarah@example.com",
+      phone: "+1 202 555 0123",
+      phoneCountry: "US",
+      subject: "International enquiry",
+      message: "I would like some fragrance recommendations.",
+      website: "",
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) expect(parsed.data.phone).toBe("+12025550123");
   });
 
   it("rejects a short message and filled honeypot", () => {

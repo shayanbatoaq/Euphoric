@@ -10,13 +10,16 @@ import {
   Phone,
 } from "lucide-react";
 import { WhatsAppIcon } from "../components/WhatsAppIcon";
+import { InternationalPhoneField } from "../components/InternationalPhoneField";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../components/ui/accordion";
+import type { CountryCode } from "libphonenumber-js";
 
 export function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phone: "+92 ",
+    phoneCountry: "PK" as CountryCode,
     subject: "",
     message: "",
     website: "",
@@ -62,7 +65,8 @@ export function ContactPage() {
       setFormData({
         name: "",
         email: "",
-        phone: "",
+        phone: "+92 ",
+        phoneCountry: "PK",
         subject: "",
         message: "",
         website: "",
@@ -286,27 +290,17 @@ export function ContactPage() {
                 )}
               </div>
 
-              <div>
-                <label className="text-[#C0C0C0] text-xs tracking-widest uppercase block mb-2">
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  placeholder="+92 334-1111657"
-                  inputMode="tel"
-                  autoComplete="tel"
-                  className="w-full bg-[#0A0A0A] border border-[#C0C0C0]/30 px-4 py-3 text-[#F5F5F5] focus:outline-none focus:border-[#C0C0C0] transition-colors"
-                />
-                {fieldErrors.phone && (
-                  <p className="mt-2 text-xs text-red-200">
-                    {fieldErrors.phone}
-                  </p>
-                )}
-              </div>
+              <InternationalPhoneField
+                country={formData.phoneCountry}
+                value={formData.phone}
+                error={fieldErrors.phone}
+                onCountryChange={(phoneCountry) =>
+                  setFormData((current) => ({ ...current, phoneCountry }))
+                }
+                onValueChange={(phone) =>
+                  setFormData((current) => ({ ...current, phone }))
+                }
+              />
 
               <div>
                 <label className="text-[#C0C0C0] text-xs tracking-widest uppercase block mb-2">

@@ -9,7 +9,6 @@ import {
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import {
-  Facebook,
   LockKeyhole,
   Mail,
   Minus,
@@ -252,6 +251,7 @@ export function AccountDialog() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [status, setStatus] = useState<{
     kind: "success" | "error";
@@ -271,6 +271,19 @@ export function AccountDialog() {
     setSubmitting(true);
     setStatus(null);
 
+    if (mode === "signup") {
+      if (password.length < 8 || !/\d/.test(password)) {
+        setSubmitting(false);
+        setStatus({ kind: "error", message: "Password must be at least 8 characters and include a number." });
+        return;
+      }
+      if (password !== confirmPassword) {
+        setSubmitting(false);
+        setStatus({ kind: "error", message: "Passwords do not match." });
+        return;
+      }
+    }
+
     const result =
       mode === "signup"
         ? await signUp(name.trim(), email.trim(), password)
@@ -287,7 +300,7 @@ export function AccountDialog() {
     }
   };
 
-  const handleProvider = async (provider: "google" | "facebook") => {
+  const handleProvider = async (provider: "google") => {
     setSubmitting(true);
     setStatus(null);
     const result = await signInWithProvider(provider);
@@ -395,7 +408,7 @@ export function AccountDialog() {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 gap-3">
                     <button
                       type="button"
                       onClick={() => handleProvider("google")}
@@ -406,15 +419,6 @@ export function AccountDialog() {
                         G
                       </span>
                       Google
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleProvider("facebook")}
-                      disabled={submitting}
-                      className="flex items-center justify-center gap-2 border border-[#C0C0C0]/25 bg-[#1C1C1E] px-4 py-3 text-sm text-[#F5F5F5] transition-colors hover:border-[#C0C0C0] disabled:opacity-50"
-                    >
-                      <Facebook className="size-5" />
-                      Facebook
                     </button>
                   </div>
 
@@ -481,12 +485,33 @@ export function AccountDialog() {
                               : "new-password"
                           }
                           required
-                          minLength={6}
-                          placeholder="At least 6 characters"
+                          minLength={8}
+                          pattern=".*[0-9].*"
+                          title="Use at least 8 characters and include a number."
+                          placeholder={mode === "signin" ? "Password" : "At least 8 characters + a number"}
                           className="w-full border border-[#C0C0C0]/25 bg-[#1C1C1E] py-3 pl-10 pr-3 text-[#F5F5F5] outline-none placeholder:text-[#D9D9D9]/40 focus:border-[#C0C0C0]"
                         />
                       </div>
                     </label>
+
+                    {mode === "signup" && (
+                      <label className="block">
+                        <span className="mb-2 block text-xs uppercase tracking-widest text-[#C0C0C0]">Confirm password</span>
+                        <div className="relative">
+                          <LockKeyhole className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#C0C0C0]" />
+                          <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(event) => setConfirmPassword(event.target.value)}
+                            autoComplete="new-password"
+                            required
+                            minLength={8}
+                            placeholder="Re-enter your password"
+                            className="w-full border border-[#C0C0C0]/25 bg-[#1C1C1E] py-3 pl-10 pr-3 text-[#F5F5F5] outline-none placeholder:text-[#D9D9D9]/40 focus:border-[#C0C0C0]"
+                          />
+                        </div>
+                      </label>
+                    )}
 
                     <button
                       type="submit"

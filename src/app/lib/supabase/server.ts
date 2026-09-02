@@ -6,6 +6,7 @@ import type { Database } from "../../types/database";
 import {
   isSupabaseConfigured,
   requirePublicSupabaseConfig,
+  fetchWithSupabaseTimeout,
 } from "./config";
 
 export async function createSupabaseServerClient() {
@@ -32,5 +33,6 @@ export async function createSupabaseServerClient() {
         }
       },
     },
+    global: { fetch: fetchWithSupabaseTimeout },
   });
 }

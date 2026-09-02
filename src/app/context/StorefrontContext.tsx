@@ -66,7 +66,7 @@ interface StorefrontContextValue {
   ) => Promise<AuthActionResult>;
   signIn: (email: string, password: string) => Promise<AuthActionResult>;
   signInWithProvider: (
-    provider: Extract<Provider, "google" | "facebook">,
+    provider: Extract<Provider, "google">,
   ) => Promise<AuthActionResult>;
   signOut: () => Promise<AuthActionResult>;
 }
@@ -293,7 +293,7 @@ export function StorefrontProvider({
   };
 
   const signInWithProvider = async (
-    provider: Extract<Provider, "google" | "facebook">,
+    provider: Extract<Provider, "google">,
   ): Promise<AuthActionResult> => {
     const supabase = getSupabaseBrowserClient();
 

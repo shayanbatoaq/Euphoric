@@ -71,7 +71,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, floral, and warm fragrance that develops from Lemon, Pineapple into Birch, Jasmine, finishing with Musk, Ambergris.",
     "longDescription": "Club de Nuit by Armaf is a fresh, floral, warm fragrance with a confident masculine character. It opens with Lemon, Pineapple, Bergamot, Black Currant, creating the first bright and expressive impression. The heart develops through Birch, Jasmine, Rose, adding texture and character as the scent settles. In the dry down, Musk, Ambergris, Patchouli, Vanilla provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nDates, dinners, and occasions where you want a richer presence\nThose who enjoy fresh, floral, warm fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/club-de-nuit-armaf-men.png"
   },
   {
     "id": "chrome-aqua-azzaro-men",
@@ -99,7 +99,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, aquatic, and floral fragrance that develops from Grapefruit, Green Apple into Sea Notes, Basil, finishing with Cypress, Vetiver.",
     "longDescription": "Chrome Aqua by Azzaro is a fresh, aquatic, floral fragrance with a confident masculine character. It opens with Grapefruit, Green Apple, Violet Leaf, creating the first bright and expressive impression. The heart develops through Sea Notes, Basil, Mint, adding texture and character as the scent settles. In the dry down, Cypress, Vetiver provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, aquatic, floral fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/chrome-aqua-azzaro-men.png"
   },
   {
     "id": "chrome-extreme-azzaro-men",
@@ -217,7 +217,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and warm fragrance that develops from Lemon, Ginger into Apple, Cardamom, finishing with Tonka Bean, Amberwood.",
     "longDescription": "Wanted by Azzaro is a bold woody-spicy fragrance that opens with citrus and spice for an energetic start. Bright lemon, zesty ginger, lavender, and mint kick things off. At the heart, apple, cardamom, juniper, and geranium add fruitiness, aromatic spice, and herbal warmth. The base combines tonka bean, amberwood, and vetiver for a rich, warm, slightly earthy finish.\n\nPerfect for:\n\nEvening wear or nights out\nWhen you want something confident and attention-grabbing\nThose who like spicy citrus woods",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/wanted-azzaro-men.png"
   },
   {
     "id": "wanted-by-night-azzaro-men",
@@ -276,7 +276,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and woody fragrance that develops from Bergamot into Juniper, Black Pepper, finishing with Atlas Cedar, Virginia Cedar.",
     "longDescription": "Hero by Burberry is a fresh, spicy, woody fragrance with a confident masculine character. It opens with Bergamot, creating the first bright and expressive impression. The heart develops through Juniper, Black Pepper, adding texture and character as the scent settles. In the dry down, Atlas Cedar, Virginia Cedar, Himalayan Cedar provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, spicy, woody fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/hero-burberry-men.png"
   },
   {
     "id": "london-for-men-burberry-men",
@@ -484,7 +484,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, floral, and warm fragrance that develops from Violet Leaf, Bergamot into Vetiver, Woody Notes, finishing with White Honey, Musk.",
     "longDescription": "BVLGARI MAN by BVLGARI is a fresh, floral, warm fragrance with a confident masculine character. It opens with Violet Leaf, Bergamot, Lotus, White Pear, creating the first bright and expressive impression. The heart develops through Vetiver, Woody Notes, Sandalwood, Amber, adding texture and character as the scent settles. In the dry down, White Honey, Musk, Benzoin, Tonka Bean provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nDates, dinners, and occasions where you want a richer presence\nThose who enjoy fresh, floral, warm fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/bvlgari-man-bvlgari-men.png"
   },
   {
     "id": "bvlgari-man-wood-essence-bvlgari-men",
@@ -539,7 +539,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A spicy, floral, and warm fragrance that develops from Rum, Spices into Leather, Iris, finishing with Tonka Bean, Guaiac Wood.",
     "longDescription": "Man in Black by Bvlgari is a bold and luxurious scent evoking fire and rum-soaked spice. The fragrance opens with warm aromatic spices, rich rum and tobacco. At its heart there’s leather, iris and tuberose adding creamy floral depth with a sensuous edge. The dry down settles into tonka bean, guaiac wood and benzoin—a smoky, resinous finish that lingers with power.\n\nPerfect for:\n\nEvening wear or cooler weather\nWhen you want a scent that’s confident, masculine and distinctive\nAnyone who appreciates rich woods, leather and warm orientals",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/man-in-black-bvlgari-men.png"
   },
   {
     "id": "man-in-black-intense-bvlgari-men",
@@ -1120,7 +1120,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A spicy, floral, and warm fragrance that develops from Black Pepper, Pink Pepper into Cacao, Coffee, finishing with Amber, Musk.",
     "longDescription": "CH Kings by Carolina Herrera is a spicy, floral, warm fragrance with a confident masculine character. It opens with Black Pepper, Pink Pepper, Cardamom, Violet Leaf, creating the first bright and expressive impression. The heart develops through Cacao, Coffee, Pineapple, adding texture and character as the scent settles. In the dry down, Amber, Musk, Tonka Bean provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nEvening wear, cooler weather, or special occasions\nDates, dinners, and occasions where you want a richer presence\nThose who enjoy spicy, floral, warm fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/ch-kings-carolina-herrera-men.png"
   },
   {
     "id": "ch-men-carolina-herrera-men",
@@ -1388,7 +1388,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and floral fragrance that develops from Grapefruit, Lemon into Ginger, Nutmeg, finishing with Incense, Vetiver.",
     "longDescription": "BLEU DE CHANEL by Chanel is a fresh, spicy, floral fragrance with a confident masculine character. It opens with Grapefruit, Lemon, Mint, Pink Pepper, creating the first bright and expressive impression. The heart develops through Ginger, Nutmeg, Jasmine, Iso E Super, adding texture and character as the scent settles. In the dry down, Incense, Vetiver, Cedar, Sandalwood provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, spicy, floral fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/bleu-de-chanel-chanel-men.png"
   },
   {
     "id": "coco-eau-de-parfum-chanel-women",
@@ -1621,7 +1621,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A spicy, woody, and deep fragrance that develops from Musk into Black Pepper, Cedar, finishing with Leather.",
     "longDescription": "Musk Malaki by Chopard is a spicy, woody, deep fragrance with a versatile, genderless character. It opens with Musk, creating the first bright and expressive impression. The heart develops through Black Pepper, Cedar, adding texture and character as the scent settles. In the dry down, Leather provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nEvening wear, cooler weather, or special occasions\nDates, dinners, and occasions where you want a richer presence\nThose who enjoy spicy, woody, deep fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/musk-malaki-chopard-unisex.png"
   },
   {
     "id": "ambre-nuit-dior-christian-dior-unisex",
@@ -1648,7 +1648,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and floral fragrance that develops from Bergamot, Grapefruit into Damask Rose, Pink Pepper, finishing with Ambergris, Guaiac Wood.",
     "longDescription": "Ambre Nuit Dior by Christian Dior is a fresh, spicy, floral fragrance with a versatile, genderless character. It opens with Bergamot, Grapefruit, creating the first bright and expressive impression. The heart develops through Damask Rose, Pink Pepper, adding texture and character as the scent settles. In the dry down, Ambergris, Guaiac Wood, Patchouli provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, spicy, floral fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/ambre-nuit-dior-christian-dior-unisex.png"
   },
   {
     "id": "clinique-happy-clinique-women",
@@ -1748,7 +1748,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and floral fragrance that develops from Bergamot, Black Currant into Pineapple, Patchouli, finishing with Birch, Musk.",
     "longDescription": "Aventus Creed by Creed is a fresh, spicy, floral fragrance with a confident masculine character. It opens with Bergamot, Black Currant, Apple, Lemon, creating the first bright and expressive impression. The heart develops through Pineapple, Patchouli, Jasmine, adding texture and character as the scent settles. In the dry down, Birch, Musk, Oakmoss, Cedar provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, spicy, floral fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/aventus-creed-creed-men.png"
   },
   {
     "id": "aventus-for-her-creed-women",
@@ -1812,7 +1812,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, aquatic, and woody fragrance that develops from Sea Salt, Fruity Notes into Sicilian Lemon, Bergamot, finishing with Sea Notes, Musk.",
     "longDescription": "Millesime Imperial by Creed is a fresh, aquatic, woody fragrance with a versatile, genderless character. It opens with Sea Salt, Fruity Notes, creating the first bright and expressive impression. The heart develops through Sicilian Lemon, Bergamot, Mandarin Orange, Iris, adding texture and character as the scent settles. In the dry down, Sea Notes, Musk, Woody Notes provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, aquatic, woody fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/millesime-imperial-creed-unisex.png"
   },
   {
     "id": "silver-mountain-water-creed-unisex",
@@ -1840,7 +1840,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh and woody fragrance that develops from Bergamot, Mandarin Orange into Green Tea, Black Currant, finishing with Musk, Petitgrain.",
     "longDescription": "Silver Mountain Water by Creed is a fresh, woody fragrance with a versatile, genderless character. It opens with Bergamot, Mandarin Orange, creating the first bright and expressive impression. The heart develops through Green Tea, Black Currant, adding texture and character as the scent settles. In the dry down, Musk, Petitgrain, Sandalwood, Galbanum provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, woody fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/silver-mountain-water-creed-unisex.png"
   },
   {
     "id": "cool-water-davidoff-men",
@@ -1960,7 +1960,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and floral fragrance that develops from Nutmeg Flower, Lavender into Violet Leaf, Nutmeg, finishing with Leather, Vetiver.",
     "longDescription": "Fahrenheit by Dior is a fresh, spicy, floral fragrance with a confident masculine character. It opens with Nutmeg Flower, Lavender, Cedar, Mandarin, creating the first bright and expressive impression. The heart develops through Violet Leaf, Nutmeg, Cedar, Sandalwood, adding texture and character as the scent settles. In the dry down, Leather, Vetiver, Musk, Amber provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, spicy, floral fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/fahrenheit-dior-men.png"
   },
   {
     "id": "fahrenheit-absolute-dior-men",
@@ -2734,7 +2734,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, aquatic, and floral fragrance that develops from Lime, Lemon into Marine Notes, Jasmine, finishing with White Musk, Cedar.",
     "longDescription": "Acqua di Gio is an aquatic aromatic fragrance that evokes the sea, sun, and a fresh breeze. The opening bursts with citrus notes like lime, lemon, bergamot, neroli, and mandarin mingled with aromatic hints of orange and jasmine. Its heart features watery marine accords, subtle florals, peach, freesia, and herbal rosemary. The dry down settles into white musk, cedar, oakmoss, patchouli, and soft amber for a balanced, breezy, and timeless finish.\n\nPerfect for:\n\nWarm weather, daytime wear, casual outfits\nBeach days, outdoors, travelling\nThose who like clean aquatics with citrus and soft woods",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/aqua-di-gio-giorgio-armani-men.png"
   },
   {
     "id": "armani-eau-pour-homme-giorgio-armani-men",
@@ -3834,7 +3834,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A woody fragrance that develops from Green leaves, Apple into Lotus, Mimosa, finishing with Cedarwood, Amber.",
     "longDescription": "Voyage by Nautica is an airy, aquatic fragrance that brings to mind a crisp ocean breeze and fresh green foliage. Its opening hits you with bright green leaves and juicy apple — light, clean, and instantly refreshing. At its heart, there’s a soft floral touch from lotus and mimosa, lending a slightly dewy, watery elegance. In the dry down, warm woods, amber, musk and oakmoss settle in, giving it depth and a gentle, masculine finish.\n\nPerfect for:\n\nDaytime wear, especially in warmer weather\nCasual settings, work, or outings when you want to smell fresh without being too loud\nAnyone who likes clean, aquatic scents with a fruit-floral twist but lasting warmth",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/voyage-nautica-men.png"
   },
   {
     "id": "1-milion-prive-paco-rabanne-men",
@@ -4677,7 +4677,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and floral fragrance that develops from Violet, Pink Pepper into Tuscan Iris, Bulgarian Rose, finishing with Indonesian Patchouli, Amber.",
     "longDescription": "Noir by Tom Ford is a fresh, spicy, floral fragrance with a confident masculine character. It opens with Violet, Pink Pepper, Caraway, Bergamot, creating the first bright and expressive impression. The heart develops through Tuscan Iris, Bulgarian Rose, Black Pepper, Nutmeg, adding texture and character as the scent settles. In the dry down, Indonesian Patchouli, Amber, Vanilla, Civet provide lasting depth, warmth, and balance.\n\nPerfect for:\n\nDaytime wear, warm weather, or casual outings\nWork, travel, and everyday wear when you want a polished scent\nThose who enjoy fresh, spicy, floral fragrances",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/noir-tom-ford-men.png"
   },
   {
     "id": "noir-extreme-tom-ford-men",
@@ -5415,7 +5415,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and woody fragrance that develops from Pink Pepper, Elemi into Cinnamon, Saffron, finishing with Tobacco, Leather.",
     "longDescription": "Spice Bomb is a powerful, spicy-woody fragrance for men that opens with an explosive burst of pink pepper, elemi, bergamot and grapefruit. Its heart is rich with warming spices like cinnamon, saffron and paprika, and the base anchors the scent with tobacco, leather and vetiver — making it bold, confident and attention-grabbing.\n\nPerfect for:\n\nEvenings, cool weather, nights out or when you want to stand out\nWhen you want a strong masculine scent with spicy-woody depth\nThose who enjoy bold fragrances with tobacco, leather and warm spice profiles",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/spicebomb-viktor-rolf-men.png"
   },
   {
     "id": "spicebomb-extreme-viktor-rolf-men",
@@ -5767,7 +5767,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, floral, and woody fragrance that develops from Ambroxan, Bergamot into Woody Notes, Floral Notes, finishing with Patchouli, Musk.",
     "longDescription": "Office for Men by Fragrance One is a modern woody-spicy fragrance perfect for the professional you. It opens with fresh citrus and bergamot with a touch of orris root and ambroxan, which then flows into a heart of woody and floral notes alongside ambergris, amber, and jasmine. The base is warm and rich: patchouli, musk, and Cashalox round it out for longevity and a confident dry down.\n\nPerfect for:\n\nOffice/business settings, formal or semi-formal wear\nAll-day wear when you need to feel sharp and composed\nThose who like crisp citruses blended with woods and amber",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/office-for-men-fragrance-one-men.png"
   },
   {
     "id": "aramis-aramis-men",
@@ -5966,7 +5966,7 @@ export const products: Product[] = [
     },
     "shortDescription": "A fresh, spicy, and woody fragrance that develops from Bergamot, Sichuan Pepper into Lavender, Star Anise, finishing with Ambroxan, Vetiver.",
     "longDescription": "Sauvage by Dior is a bold, fresh-spicy fragrance that opens with zesty bergamot and sharp pepper, flows into aromatic lavender and warm nutmeg, then trails off into rugged woods and ambroxan, creating a long-lasting signature that combines outdoorsy freshness with modern edge.\n\nPerfect for:\n\nDay or night wear when you want something clean but confident\nCasual settings, date nights, or nights out\nThose who enjoy fresh citrus balances with spicy and woody depth",
-    "image": "/product-placeholder.svg"
+    "image": "/product-images/sauvage-dior-men.png"
   }
 ];
 

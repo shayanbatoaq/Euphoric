@@ -8,6 +8,8 @@ import { requireUser } from "../../lib/auth";
 import { createSupabaseServerClient } from "../../lib/supabase/server";
 import { AccountNotice } from "../../components/account/OrderUI";
 import { ConfirmSubmitButton } from "../../components/ConfirmSubmitButton";
+import { pakistanCities } from "../../data/pakistan-cities";
+import { PakistanPhoneInput } from "../../components/PakistanPhoneInput";
 
 export const metadata = {
   title: "Saved addresses | Euphoric",
@@ -118,11 +120,19 @@ export default async function AccountAddressesPage({
           <h3 className="font-playfair text-2xl">Add an address</h3>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             <AddressField label="Label">
-              <input
+              <select
                 name="label"
-                placeholder="Home or Office"
                 className="account-input"
-              />
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Choose a label
+                </option>
+                <option value="Home">Home</option>
+                <option value="Office">Office</option>
+                <option value="Work">Work</option>
+                <option value="Other">Other</option>
+              </select>
             </AddressField>
             <AddressField label="Full name">
               <input
@@ -133,17 +143,25 @@ export default async function AccountAddressesPage({
               />
             </AddressField>
             <AddressField label="Phone number">
-              <input
+              <PakistanPhoneInput
                 name="phone"
                 defaultValue={profile?.phone ?? ""}
-                placeholder="+92 334-1111657"
-                inputMode="tel"
                 required
-                className="account-input"
               />
             </AddressField>
             <AddressField label="City">
-              <input name="city" required className="account-input" />
+              <input
+                name="city"
+                list="pakistan-address-cities"
+                required
+                placeholder="Search or type your city"
+                className="account-input"
+              />
+              <datalist id="pakistan-address-cities">
+                {pakistanCities.map((city) => (
+                  <option key={city} value={city} />
+                ))}
+              </datalist>
             </AddressField>
             <div className="sm:col-span-2">
               <AddressField label="Complete address">

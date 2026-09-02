@@ -38,7 +38,10 @@ function generateSku(slug: string, category: string) {
 }
 
 async function seed() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(
+    /\/rest\/v1\/?$/,
+    "",
+  );
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!url || !serviceRoleKey) {

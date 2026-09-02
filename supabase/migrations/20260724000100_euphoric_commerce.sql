@@ -744,7 +744,7 @@ declare
   admin_user_id uuid := (select auth.uid());
   transition_is_valid boolean := false;
 begin
-  if not public.is_admin() then
+  if auth.role() <> 'service_role' and not public.is_admin() then
     raise exception 'Administrator access required'
       using errcode = '42501';
   end if;

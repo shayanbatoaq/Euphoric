@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { requireUser } from "../../lib/auth";
 import { updateProfileAction } from "../../actions/account";
 import { AccountNotice } from "../../components/account/OrderUI";
+import { PakistanPhoneInput } from "../../components/PakistanPhoneInput";
 
 export const metadata = {
   title: "My profile | Euphoric",
@@ -61,13 +62,9 @@ export default async function AccountProfilePage({
             </span>
           </Field>
           <Field label="Phone number">
-            <input
+            <PakistanPhoneInput
               name="phone"
               defaultValue={profile?.phone ?? ""}
-              placeholder="+92 334-1111657"
-              inputMode="tel"
-              autoComplete="tel"
-              className="account-input"
             />
           </Field>
           <button className="bg-[#C0C0C0] px-6 py-3 text-xs font-semibold uppercase tracking-widest text-black hover:bg-white">

@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { DEFAULT_SHIPPING_FEE } from "../lib/commerce";
+import { pakistanCities } from "../data/pakistan-cities";
 import {
   type CheckoutDetails,
   useStorefront,
@@ -39,7 +40,7 @@ interface CheckoutResponse {
 
 const initialDetails: CheckoutDetails = {
   name: "",
-  phone: "+92 ",
+  phone: "",
   email: "",
   city: "",
   address: "",
@@ -59,12 +60,16 @@ function formatPakistanPhone(value: string) {
 
   digits = digits.slice(0, 10);
 
-  if (!digits) return "+92 ";
+  if (!digits) return "";
   if (digits.length <= 3) return `+92 ${digits}`;
   return `+92 ${digits.slice(0, 3)}-${digits.slice(3)}`;
 }
 
-export default function CheckoutPage() {
+export default function CheckoutPage({
+  customerDefaults,
+}: {
+  customerDefaults?: Partial<CheckoutDetails>;
+}) {
   const router = useRouter();
   const {
     cartLines,
@@ -74,7 +79,11 @@ export default function CheckoutPage() {
     getProduct,
     clearCart,
   } = useStorefront();
-  const [details, setDetails] = useState<CheckoutDetails>(initialDetails);
+  const [details, setDetails] = useState<CheckoutDetails>({
+    ...initialDetails,
+    ...customerDefaults,
+  });
+  const [saveAddress, setSaveAddress] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
@@ -114,6 +123,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           ...details,
           items: cartLines,
+          saveAddress,
           idempotencyKey: idempotencyKey.current,
           website: "",
         }),
@@ -243,6 +253,7 @@ export default function CheckoutPage() {
                   onChange={(value) =>
                     updateField("phone", formatPakistanPhone(value))
                   }
+                  placeholder="333-1234567"
                   autoComplete="tel"
                   inputMode="tel"
                   error={fieldErrors.phone}
@@ -268,14 +279,10 @@ export default function CheckoutPage() {
               description="Tell us where you’d like your fragrances delivered."
             >
               <div className="grid gap-5">
-                <Field
-                  label="City"
-                  name="city"
+                <CityField
                   value={details.city}
                   onChange={(value) => updateField("city", value)}
-                  autoComplete="address-level2"
                   error={fieldErrors.city}
-                  required
                 />
                 <TextAreaField
                   label="Complete address"
@@ -337,6 +344,16 @@ export default function CheckoutPage() {
                 <span>
                   I confirm that my contact and delivery information is correct.
                 </span>
+              </label>
+
+              <label className="mt-4 flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#D9D9D9]/70">
+                <input
+                  type="checkbox"
+                  checked={saveAddress}
+                  onChange={(event) => setSaveAddress(event.target.checked)}
+                  className="mt-1 size-4 accent-[#C0C0C0]"
+                />
+                <span>Save this address to my account for future orders.</span>
               </label>
 
               <button
@@ -419,6 +436,7 @@ interface FieldProps {
   type?: string;
   inputMode?: "tel" | "email" | "text" | "numeric";
   autoComplete?: string;
+  placeholder?: string;
   error?: string;
   required?: boolean;
 }
@@ -431,6 +449,7 @@ function Field({
   type = "text",
   inputMode,
   autoComplete,
+  placeholder,
   error,
   required,
 }: FieldProps) {
@@ -448,6 +467,7 @@ function Field({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         autoComplete={autoComplete}
+        placeholder={placeholder}
         required={required}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
@@ -457,6 +477,52 @@ function Field({
             : "border-[#C0C0C0]/20 focus:border-[#C0C0C0]"
         }`}
       />
+      {error && (
+        <span id={errorId} className="mt-2 block text-xs text-red-200">
+          {error}
+        </span>
+      )}
+    </label>
+  );
+}
+
+function CityField({
+  value,
+  onChange,
+  error,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  error?: string;
+}) {
+  const errorId = "city-error";
+
+  return (
+    <label className="block">
+      <span className="mb-2 block text-[11px] uppercase tracking-[0.18em] text-[#D9D9D9]/65">
+        City
+      </span>
+      <input
+        name="city"
+        list="pakistan-cities"
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        autoComplete="address-level2"
+        placeholder="Search or type your city"
+        required
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? errorId : undefined}
+        className={`w-full border bg-[#0A0A0A] px-4 py-3.5 text-sm text-[#F5F5F5] outline-none transition placeholder:text-[#D9D9D9]/30 ${
+          error
+            ? "border-red-300/60 focus:border-red-200"
+            : "border-[#C0C0C0]/20 focus:border-[#C0C0C0]"
+        }`}
+      />
+      <datalist id="pakistan-cities">
+        {pakistanCities.map((city) => (
+          <option key={city} value={city} />
+        ))}
+      </datalist>
       {error && (
         <span id={errorId} className="mt-2 block text-xs text-red-200">
           {error}

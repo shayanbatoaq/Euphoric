@@ -9,10 +9,8 @@ import {
   orderStatusSchema,
   productMutationSchema,
 } from "../lib/commerce";
-import { sendOrderStatusEmail } from "../lib/email";
 import { getOrderWithItemsById } from "../lib/orders";
 import { createSupabaseAdminClient } from "../lib/supabase/admin";
-import { createSupabaseServerClient } from "../lib/supabase/server";
 
 function text(formData: FormData, name: string) {
   return String(formData.get(name) ?? "");
@@ -48,8 +46,7 @@ export async function updateOrderAction(formData: FormData) {
   const before = await getOrderWithItemsById(parsed.data.orderId);
   if (!before) actionError(path, "Order not found.");
 
-  const supabase = await createSupabaseServerClient();
-  if (!supabase) actionError(path, "Admin service unavailable.");
+  const supabase = createSupabaseAdminClient();
 
   const { error } = await supabase.rpc("admin_update_order", {
     p_order_id: parsed.data.orderId,
@@ -60,19 +57,6 @@ export async function updateOrderAction(formData: FormData) {
   });
 
   if (error) actionError(path, error.message);
-
-  const after = await getOrderWithItemsById(parsed.data.orderId);
-  if (
-    after &&
-    before.order_status !== after.order_status
-  ) {
-    await sendOrderStatusEmail(
-      after,
-      before.order_status,
-      after.order_status,
-      parsed.data.adminNote || undefined,
-    ).catch(() => undefined);
-  }
 
   revalidatePath("/admin");
   revalidatePath("/admin/orders");
