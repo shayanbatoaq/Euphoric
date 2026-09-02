@@ -11,5 +11,19 @@ export function getAuthRedirectOrigin() {
     return browserOrigin;
   }
 
-  return configuredOrigin || browserOrigin;
+  if (process.env.NODE_ENV === "development") {
+    return configuredOrigin || "http://localhost:3000";
+  }
+
+  if (configuredOrigin) {
+    try {
+      if (!isInternalHost(new URL(configuredOrigin).hostname)) {
+        return configuredOrigin;
+      }
+    } catch {
+      // Fall through to the canonical production URL for malformed config.
+    }
+  }
+
+  return "https://euphoric.pk";
 }
